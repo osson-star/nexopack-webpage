@@ -16,7 +16,7 @@ The Nexopack website loads Tailwind CSS via a CDN `<script>` tag in both `index.
 
 ## Solution
 
-Set up Vite as the build tool with Tailwind CSS v4 via the `@tailwindcss/vite` plugin. Extract the shared Tailwind config into a single `tailwind.config.js`. Create a CSS entry point (`css/main.css`) that imports Tailwind and the page-specific custom CSS files. Remove the CDN `<script>` tags from both HTML pages.
+Set up Vite as the build tool with Tailwind CSS v4 via the `@tailwindcss/vite` plugin. Define the shared Tailwind theme using the `@theme` directive in a single CSS entry point (`css/main.css`). Remove the CDN `<script>` tags from both HTML pages.
 
 ## Scope
 
@@ -24,8 +24,7 @@ Set up Vite as the build tool with Tailwind CSS v4 via the `@tailwindcss/vite` p
 
 - Initialize `package.json` with Vite, Tailwind CSS v4, and `@tailwindcss/vite`
 - Create `vite.config.js` configured for multi-page setup (`index.html` + `products.html`)
-- Create `tailwind.config.js` with the shared palette (sage, cream, muted, primary, divider) and custom letter-spacing (spaced, widest2)
-- Create `css/main.css` as the single Tailwind entry point, importing `css/home.css` and `css/styles.css`
+- Create `css/main.css` as the single Tailwind entry point with `@theme` config (colors, fonts, letter-spacing) and imports for `css/home.css` and `css/styles.css`
 - Update both HTML files: remove CDN `<script>` + inline config, add `<link>` to `css/main.css`
 - Create `.gitignore` (node_modules, dist)
 - Add `dev`, `build`, and `preview` scripts to `package.json`
@@ -44,12 +43,11 @@ Set up Vite as the build tool with Tailwind CSS v4 via the `@tailwindcss/vite` p
 nexopack/
   index.html              — updated <head>, no CDN script
   products.html           — updated <head>, no CDN script
-  css/main.css            — NEW: Tailwind entry point
+  css/main.css            — NEW: Tailwind entry point with @theme config
   css/home.css            — unchanged (homepage custom styles)
   css/styles.css          — unchanged (product page custom styles)
   js/home.js              — unchanged
   js/script.js            — unchanged
-  tailwind.config.js      — NEW: shared Tailwind config
   vite.config.js          — NEW: Vite config for multi-page build
   package.json            — NEW: dependencies and scripts
   .gitignore              — NEW: excludes node_modules and dist
@@ -58,57 +56,40 @@ nexopack/
   Icons/                  — unchanged
 ```
 
-## Shared Tailwind Config
+## CSS Entry Point and Theme Config
 
-Extracted from the current inline `<script>` blocks into `tailwind.config.js`:
-
-```javascript
-export default {
-  content: ['./*.html', './js/**/*.js'],
-  theme: {
-    extend: {
-      fontFamily: {
-        sans:    ['DM Sans', 'sans-serif'],
-        display: ['Playfair Display', 'serif']
-      },
-      colors: {
-        sage: {
-          100: '#DFE8E1',
-          300: '#98B69E',
-          500: '#6B8F78',
-          700: '#4A6B58',
-          800: '#395644',
-          900: '#243D2F'
-        },
-        cream:   { DEFAULT: '#F7F6F0', dark: '#ECEAE3' },
-        muted:   '#6D7873',
-        primary: '#587E67',
-        divider: '#d4ddd5'
-      },
-      letterSpacing: {
-        spaced:   '0.15em',
-        widest2:  '0.25em'
-      }
-    }
-  }
-}
-```
-
-The `content` array tells Tailwind which files to scan for class names. When new HTML pages are added, they are automatically covered by the `./*.html` glob.
-
-## CSS Entry Point
-
-`css/main.css` serves as the single import for both pages:
+`css/main.css` serves as the single CSS entry point for both pages. In Tailwind CSS v4, the theme is configured directly in CSS using the `@theme` directive — there is no separate `tailwind.config.js` file. Content detection is automatic (Tailwind scans all project files).
 
 ```css
 @import "tailwindcss";
+
+@theme {
+  --font-sans: 'DM Sans', sans-serif;
+  --font-display: 'Playfair Display', serif;
+
+  --color-sage-100: #DFE8E1;
+  --color-sage-300: #98B69E;
+  --color-sage-500: #6B8F78;
+  --color-sage-700: #4A6B58;
+  --color-sage-800: #395644;
+  --color-sage-900: #243D2F;
+  --color-cream: #F7F6F0;
+  --color-cream-dark: #ECEAE3;
+  --color-muted: #6D7873;
+  --color-primary: #587E67;
+  --color-divider: #d4ddd5;
+
+  --tracking-spaced: 0.15em;
+  --tracking-widest2: 0.25em;
+}
+
 @import "./home.css";
 @import "./styles.css";
 ```
 
 Both pages link to this file: `<link rel="stylesheet" href="/css/main.css">`.
 
-Note: Both `home.css` and `styles.css` are imported globally. Since their selectors are scoped to page-specific classes (`.hero-overlay`, `.product-card`, `.tab`, etc.), there are no conflicts. This keeps the setup simple — one CSS entry point for all pages.
+Custom CSS is imported after `@import "tailwindcss"` so that custom selectors (`.hero-overlay`, `.product-card`, `.tab`, etc.) can override Tailwind utilities when needed. Both `home.css` and `styles.css` are imported globally — since their selectors are scoped to page-specific classes, there are no conflicts. This keeps the setup simple: one CSS entry point for all pages.
 
 ## Vite Config
 
@@ -133,32 +114,23 @@ When new pages are added, they are registered here (one line per page).
 
 ## HTML Changes
 
-### Before (both pages)
+### What gets removed
 
-```html
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                // ... 20+ lines of config
-            }
-        }
-    }
-</script>
+From both pages:
+- The CDN `<script src="https://cdn.tailwindcss.com"></script>` tag
+- The inline `<script>tailwind.config = { ... }</script>` block (~25 lines)
+- The separate `<link>` to page-specific CSS (`css/home.css` or `css/styles.css`) — now imported via `main.css`
 
-<link rel="stylesheet" href="css/home.css">
-```
+### What gets added
 
-### After (both pages)
+To both pages:
+- `<link rel="stylesheet" href="/css/main.css">`
 
-```html
-<link rel="stylesheet" href="/css/main.css">
-```
+### What stays unchanged
 
-The page-specific CSS (`home.css` or `styles.css`) is already included via `main.css` imports, so separate `<link>` tags for those are removed.
-
-JS files (`home.js`, `script.js`) continue to be loaded via `<script defer>` tags as before — no changes needed.
+- Google Fonts `<link>` tags (preconnect + stylesheet) — these load fonts from Google's CDN and are not part of Tailwind
+- JS files (`home.js`, `script.js`) continue to be loaded via `<script defer>` tags
+- All other HTML content
 
 ## Developer Workflow
 
