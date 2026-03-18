@@ -48,10 +48,10 @@ function showTab(material, btn) {
     const tag = p.link ? 'a' : 'div';
     const href = p.link ? ` href="${p.link}"` : '';
     return `
-    <${tag}${href} class="product-card relative bg-cream rounded-lg overflow-hidden cursor-pointer" style="border: 1px solid #d4ddd5;">
+    <${tag}${href} class="product-card relative bg-cream rounded-lg overflow-hidden cursor-pointer border border-divider">
       <div class="p-6 flex items-center justify-between">
         <h3 class="font-display text-lg font-semibold transition-colors duration-300">${p.name}</h3>
-        <span class="arrow transition-colors duration-300" style="color: hsl(150, 5%, 45%);">&rarr;</span>
+        <span class="arrow transition-colors duration-300 text-muted">&rarr;</span>
       </div>
     </${tag}>
   `;
