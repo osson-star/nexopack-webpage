@@ -62,7 +62,11 @@
     color: #F7F6F0;
 }
 
-/* Tab active state */
+/* Tab states */
+.tab {
+    color: hsl(150, 5%, 45%);
+}
+
 .tab.active {
     background: hsl(143, 18%, 42%);
     color: #F7F6F0;
