@@ -1,0 +1,70 @@
+/* css/home.css — Homepage styles that require custom CSS (not expressible as Tailwind utilities) */
+
+/* Hero overlay — multi-stop gradient */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, hsla(143,20%,28%,0.85), hsla(143,20%,28%,0.55), hsla(143,20%,28%,0.15));
+}
+
+/* Glassmorphism button */
+.btn-light {
+    color: hsl(150, 10%, 15%);
+    border: 1.5px solid rgba(255, 255, 255, 0.45);
+    background: linear-gradient(135deg, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.12) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(31,38,135,0.10), inset 0 4px 5px rgba(255,255,255,0.85), inset 0 -4px 5px rgba(0,0,0,0.04);
+    transition: all 0.3s ease;
+}
+
+.btn-light:hover {
+    background: linear-gradient(135deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.22) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(31,38,135,0.15), inset 0 4px 5px rgba(255,255,255,1), inset 0 -4px 5px rgba(0,0,0,0.04);
+}
+
+/* Product card hover — changes bg/border/text colors; too many coordinated changes for pure utilities */
+.product-card {
+    transition: all 0.3s;
+}
+
+.product-card:hover {
+    background: hsl(143, 20%, 28%);
+    border-color: hsl(143, 20%, 28%);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.product-card:hover h3 {
+    color: #F7F6F0;
+}
+
+.product-card:hover .arrow {
+    color: hsla(60,20%,97%,0.6);
+}
+
+/* Custom design card hover — icon color inversion */
+.custom-card {
+    transition: all 0.3s;
+}
+
+.custom-card:hover {
+    border-color: hsla(143,18%,42%,0.3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.custom-icon {
+    transition: all 0.3s;
+}
+
+.custom-card:hover .custom-icon {
+    background: hsl(143, 18%, 42%);
+    color: #F7F6F0;
+}
+
+/* Tab active state */
+.tab.active {
+    background: hsl(143, 18%, 42%);
+    color: #F7F6F0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
