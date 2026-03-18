@@ -107,22 +107,22 @@
 </section>
 
 <!-- Products -->
-<section id="products" class="section products">
-  <div class="container">
-    <div class="section-header">
-      <p class="section-tag">Our Range</p>
-      <h2 class="section-title">Products by Category</h2>
+<section id="products" class="py-16 md:py-24 bg-sage-100">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="text-center mb-12">
+            <p class="text-xs uppercase font-semibold mb-3" style="letter-spacing: 0.15em; color: hsl(150, 5%, 45%);">Our Range</p>
+            <h2 class="font-display text-3xl sm:text-4xl font-semibold text-sage-900">Products by Category</h2>
+        </div>
+        <div class="flex justify-center gap-2 mb-12 flex-wrap">
+            <button class="tab py-2.5 px-6 rounded-full text-sm font-medium border-none cursor-pointer font-sans transition-all bg-cream" style="color: hsl(150, 5%, 45%);" onclick="showTab('paper', this)">Paper</button>
+            <button class="tab py-2.5 px-6 rounded-full text-sm font-medium border-none cursor-pointer font-sans transition-all bg-cream" style="color: hsl(150, 5%, 45%);" onclick="showTab('plastic', this)">Plastic</button>
+            <button class="tab py-2.5 px-6 rounded-full text-sm font-medium border-none cursor-pointer font-sans transition-all bg-cream" style="color: hsl(150, 5%, 45%);" onclick="showTab('bamboo', this)">Bamboo</button>
+            <button class="tab py-2.5 px-6 rounded-full text-sm font-medium border-none cursor-pointer font-sans transition-all bg-cream" style="color: hsl(150, 5%, 45%);" onclick="showTab('cornstarch', this)">Cornstarch</button>
+            <button class="tab py-2.5 px-6 rounded-full text-sm font-medium border-none cursor-pointer font-sans transition-all bg-cream" style="color: hsl(150, 5%, 45%);" onclick="showTab('husk', this)">Husk</button>
+            <button class="tab py-2.5 px-6 rounded-full text-sm font-medium border-none cursor-pointer font-sans transition-all bg-cream" style="color: hsl(150, 5%, 45%);" onclick="showTab('bagasse', this)">Bagasse / Sugarcane Pulp</button>
+        </div>
+        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" id="product-grid"></div>
     </div>
-    <div class="tabs">
-      <button class="tab" onclick="showTab('paper', this)">Paper</button>
-      <button class="tab" onclick="showTab('plastic', this)">Plastic</button>
-      <button class="tab" onclick="showTab('bamboo', this)">Bamboo</button>
-      <button class="tab" onclick="showTab('cornstarch', this)">Cornstarch</button>
-      <button class="tab" onclick="showTab('husk', this)">Husk</button>
-      <button class="tab" onclick="showTab('bagasse', this)">Bagasse / Sugarcane Pulp</button>
-    </div>
-    <div class="product-grid" id="product-grid"></div>
-  </div>
 </section>
 
 <!-- Custom Design -->
