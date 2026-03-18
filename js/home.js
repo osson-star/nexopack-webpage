@@ -43,7 +43,7 @@ function showTab(material, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   if (btn) btn.classList.add('active');
   const grid = document.getElementById('product-grid');
-  const filtered = products.filter(p => p.material === material);
+  const filtered = products.filter(p => p.material === material && p.name);
   grid.innerHTML = filtered.map(p => {
     const tag = p.link ? 'a' : 'div';
     const href = p.link ? ` href="${p.link}"` : '';
