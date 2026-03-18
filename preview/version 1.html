@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexopack Insulated Paper Cup</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        sage: { 100: '#DFE8E1', 300: '#98B69E', 500: '#748F7F', 700: '#506D61', 900: '#1E3C32' },
+                        cream: { DEFAULT: '#F0F0ED', dark: '#E5E5E2' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar for data tables */
+        .table-container::-webkit-scrollbar { height: 8px; }
+        .table-container::-webkit-scrollbar-track { background: #FDFBF7; }
+        .table-container::-webkit-scrollbar-thumb { background-color: #A9BBAF; border-radius: 4px; }
+    </style>
+
+    <script defer>
+        // ─── Product card → pre-fill quote form ─────────────────────────────────────
+
+        function selectCupType(type) {
+            const select = document.getElementById('cupType');
+            if (select) {
+                select.value = type;
+                document.getElementById('cupTypeError').classList.add('hidden');
+            }
+            document.getElementById('quote').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ─── Quote form — validation & submit ───────────────────────────────────────
+
+        function showError(fieldId, show) {
+            const el = document.getElementById(fieldId + 'Error');
+            if (el) el.classList.toggle('hidden', !show);
+        }
+
+        function validateQuoteForm() {
+            const name     = document.getElementById('name').value.trim();
+            const email    = document.getElementById('email').value.trim();
+            const cupType  = document.getElementById('cupType').value;
+            const quantity = parseInt(document.getElementById('quantity').value, 10);
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            const nameOk     = name.length > 0;
+            const emailOk    = emailPattern.test(email);
+            const cupTypeOk  = cupType !== '';
+            const quantityOk = !isNaN(quantity) && quantity > 0;
+
+            showError('name',     !nameOk);
+            showError('email',    !emailOk);
+            showError('cupType',  !cupTypeOk);
+            showError('quantity', !quantityOk);
+
+            return nameOk && emailOk && cupTypeOk && quantityOk;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('quoteForm');
+            if (!form) return;
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (!validateQuoteForm()) return;
+
+                Array.from(form.elements).forEach(el => {
+                    if (el.id !== 'formSuccess') el.closest('div')?.classList.add('hidden');
+                });
+                form.querySelector('button[type="submit"]').classList.add('hidden');
+                document.getElementById('formSuccess').classList.remove('hidden');
+            });
+
+            ['name', 'email', 'cupType', 'quantity'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', () => showError(id, false));
+                if (el) el.addEventListener('change', () => showError(id, false));
+            });
+        });
+    </script>
+</head>
+<body class="font-sans bg-cream text-sage-900 antialiased selection:bg-sage-300 selection:text-white">
+
+    <!-- ===== NAVBAR ===== -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-sage-900/95 backdrop-blur-sm shadow-md">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#" class="text-2xl font-bold text-cream tracking-tight">Nexopack</a>
+            <div class="flex items-center gap-6">
+                <a href="#features" class="hidden sm:block text-sage-100 hover:text-white text-sm font-medium transition-colors">Features</a>
+                <a href="#products" class="hidden sm:block text-sage-100 hover:text-white text-sm font-medium transition-colors">Products</a>
+                <a href="#quote" class="bg-sage-500 hover:bg-sage-300 text-white text-sm font-semibold px-4 py-2 rounded-full transition-colors">Request a Quote</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="relative min-h-screen bg-sage-900 flex items-center justify-center overflow-hidden pt-20">
+        <!-- Decorative leaf shapes -->
+        <div class="absolute top-16 right-16 w-64 h-64 bg-sage-700/30 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-24 left-12 w-48 h-48 bg-sage-500/20 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+            <span class="inline-block bg-sage-700/60 text-sage-100 text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-6">100% Recyclable &amp; Planet-Friendly</span>
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-cream leading-tight mb-6">
+                Sip Sustainably.<br>Serve Beautifully.
+            </h1>
+            <p class="text-sage-300 text-lg sm:text-xl leading-relaxed mb-10 max-w-xl mx-auto">
+                Premium insulated paper cups made with plant-based lining — branded with your logo, kind to the planet, and designed to impress.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#quote" class="inline-block bg-sage-500 hover:bg-sage-300 text-white font-semibold px-8 py-4 rounded-full text-base transition-colors shadow-lg">
+                    Request a Quote
+                </a>
+                <a href="#products" class="inline-block border border-sage-500 text-sage-300 hover:text-cream hover:border-cream font-semibold px-8 py-4 rounded-full text-base transition-colors">
+                    View Products
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section id="features" class="py-24 bg-cream-dark">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-sage-900 mb-4">Why Choose Nexopack?</h2>
+                <p class="text-sage-500 text-lg sm:whitespace-nowrap">Built for businesses that care about quality, sustainability, and brand experience.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-cream rounded-2xl p-8 shadow-sm border border-sage-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-4 mb-5">
+                        <div class="w-12 h-12 bg-sage-100 rounded-xl flex items-center justify-center shrink-0">
+                            <svg class="w-6 h-6 text-sage-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 22C12 22 5 18 5 11c0-3.87 3.13-7 7-7s7 3.13 7 7c0 7-7 11-7 11Z"/>
+                                <path stroke-linecap="round" d="M12 22V12"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-sage-900">Eco-Friendly</h3>
+                    </div>
+                    <p class="text-sage-500 text-sm leading-relaxed mb-4 text-justify">Plant-based lining, no conventional plastic — designed to close the loop.</p>
+                    <ul class="space-y-1.5 text-sm text-sage-700">
+                        <li class="flex items-start gap-2"><span class="text-sage-500 mt-px">✓</span> Plant-based PLA lining</li>
+                        <li class="flex items-start gap-2"><span class="text-sage-500 mt-px">✓</span> Certified compostable</li>
+                        <li class="flex items-start gap-2"><span class="text-sage-500 mt-px">✓</span> Recyclable after use</li>
+                    </ul>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-cream rounded-2xl p-8 shadow-sm border border-sage-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-4 mb-5">
+                        <div class="w-12 h-12 bg-sage-100 rounded-xl flex items-center justify-center shrink-0">
+                            <svg class="w-6 h-6 text-sage-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-sage-900">Superior Insulation</h3>
+                    </div>
+                    <p class="text-sage-500 text-sm leading-relaxed mb-4 text-justify">Multi-wall construction locks in temperature so every sip is as good as the first.</p>
+                    <ul class="space-y-1.5 text-sm text-sage-700">
+                        <li class="flex items-start gap-2"><span class="text-sage-500 mt-px">✓</span> Hot drinks stay hot longer</li>
+                        <li class="flex items-start gap-2"><span class="text-sage-500 mt-px">✓</span> Cold drinks stay colder</li>
+                        <li class="flex items-start gap-2"><span class="text-sage-500 mt-px">✓</span> Reduces condensation</li>
+                    </ul>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-cream rounded-2xl p-8 shadow-sm border border-sage-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-4 mb-5">
+                        <div class="w-12 h-12 bg-sage-100 rounded-xl flex items-center justify-center shrink-0">
+                            <svg class="w-6 h-6 text-sage-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-sage-900">Custom Branding</h3>
+                    </div>
+                    <p class="text-sage-500 text-sm leading-relaxed mb-4 text-justify">Full-wrap print puts your logo front and centre on every cup served.</p>
+                    <ul class="space-y-1.5 text-sm text-sage-700">
+                        <li class="flex items-start gap-2"><span class="text-sage-500 mt-px">✓</span> Full-colour wrap print</li>
+                        <li class="flex items-start gap-2"><span class="text-sage-500 mt-px">✓</span> Multiple sizes available</li>
+                        <li class="flex items-start gap-2"><span class="text-sage-500 mt-px">✓</span> MOQ applies — ask us</li>
+                    </ul>
+                </div>
+                <!-- Card 4 -->
+                <div class="bg-cream rounded-2xl p-8 shadow-sm border border-sage-100 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-4 mb-5">
+                        <div class="w-12 h-12 bg-sage-100 rounded-xl flex items-center justify-center shrink-0">
+                            <svg class="w-6 h-6 text-sage-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.5C7.86 21.5 4.5 18.14 4.5 14c0-5 7.5-11.5 7.5-11.5S19.5 9 19.5 14c0 4.14-3.36 7.5-7.5 7.5Z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-sage-900">WCP &amp; Aqueous Coating</h3>
+                    </div>
+                    <p class="text-sage-500 text-sm leading-relaxed mb-4 text-justify">A PE-liner-free, water-based barrier coating with a dramatically reduced polymer footprint.</p>
+                    <ul class="space-y-1.5 text-sm text-sage-700">
+                        <li class="flex items-start gap-2"><span class="text-sage-500 mt-px">✓</span> PFAS-free &amp; BPA-free formulation</li>
+                        <li class="flex items-start gap-2"><span class="text-sage-500 mt-px">✓</span> Compatible with standard paper recycling</li>
+                        <li class="flex items-start gap-2"><span class="text-sage-500 mt-px">✓</span> Compostable to EN 13432 &amp; BPI standards</li>
+                        <li class="flex items-start gap-2"><span class="text-sage-500 mt-px">✓</span> Full hot &amp; cold beverage resistance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PRODUCT VARIANTS ===== -->
+    <section id="products" class="py-24 bg-cream">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-sage-900 mb-4">Choose Your Cup</h2>
+                <p class="text-sage-500 text-lg sm:whitespace-nowrap">Three wall configurations to suit every drink, every venue, and every budget.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Single Wall -->
+                <div class="bg-cream-dark rounded-2xl p-8 border border-sage-100 hover:border-sage-300 hover:shadow-lg transition-all flex flex-col">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-12 h-12 bg-sage-100 rounded-xl flex items-center justify-center shrink-0">
+                                <svg class="w-6 h-6 text-sage-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.5 5.5h17v2L18 9.5H6L3.5 7.5V5.5Z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 9.5L7.5 21.5h9L18 9.5"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-sage-900">Single Wall</h3>
+                        </div>
+                        <p class="text-sage-500 leading-relaxed mb-4 text-justify">Lightweight and cost-effective. Ideal for cold drinks and short-serve situations like juice bars and quick-service counters.</p>
+                        <ul class="space-y-2 text-sm text-sage-700 mb-6">
+                            <li class="flex items-center gap-2"><span class="text-sage-500">✓</span> Great for cold beverages</li>
+                            <li class="flex items-center gap-2"><span class="text-sage-500">✓</span> Lowest cost per unit</li>
+                            <li class="flex items-center gap-2"><span class="text-sage-500">✓</span> Recyclable PLA lining</li>
+                        </ul>
+                    </div>
+                    <button onclick="selectCupType('single')" class="w-full bg-sage-900 hover:bg-sage-700 text-cream font-semibold py-3 rounded-xl transition-colors">
+                        Select — Request Quote
+                    </button>
+                </div>
+
+                <!-- Ripple Wall -->
+                <div class="bg-sage-900 rounded-2xl p-8 border border-sage-700 hover:border-sage-300 hover:shadow-xl transition-all flex flex-col relative">
+                    <span class="absolute top-4 right-4 bg-sage-500 text-white text-xs font-bold px-3 py-1 rounded-full">Popular</span>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-12 h-12 bg-sage-700 rounded-xl flex items-center justify-center shrink-0">
+                                <svg class="w-6 h-6 text-sage-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 5.5H19L17.5 21.5H6.5L5 5.5Z"/>
+                                    <path stroke-linecap="round" d="M5.8 10Q12 8.5 18.2 10"/>
+                                    <path stroke-linecap="round" d="M6.3 14.5Q12 13 17.7 14.5"/>
+                                    <path stroke-linecap="round" d="M6.7 19Q12 17.5 17.3 19"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-cream">Ripple Wall</h3>
+                        </div>
+                        <p class="text-sage-300 leading-relaxed mb-4 text-justify">An embossed outer sleeve provides a comfortable grip and a layer of heat protection — perfect for cafes and hot drink services.</p>
+                        <ul class="space-y-2 text-sm text-sage-300 mb-6">
+                            <li class="flex items-center gap-2"><span class="text-sage-500">✓</span> Comfortable grip</li>
+                            <li class="flex items-center gap-2"><span class="text-sage-500">✓</span> Heat-resistant outer</li>
+                            <li class="flex items-center gap-2"><span class="text-sage-500">✓</span> No sleeve needed</li>
+                        </ul>
+                    </div>
+                    <button onclick="selectCupType('ripple')" class="w-full bg-sage-500 hover:bg-sage-300 text-white font-semibold py-3 rounded-xl transition-colors">
+                        Select — Request Quote
+                    </button>
+                </div>
+
+                <!-- Double Wall -->
+                <div class="bg-cream-dark rounded-2xl p-8 border border-sage-100 hover:border-sage-300 hover:shadow-lg transition-all flex flex-col">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-4 mb-5">
+                            <div class="w-12 h-12 bg-sage-100 rounded-xl flex items-center justify-center shrink-0">
+                                <svg class="w-6 h-6 text-sage-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <ellipse cx="12" cy="5.5" rx="7" ry="1.5"/>
+                                    <path stroke-linecap="round" d="M5 5.5 C5.2 12 6.5 17 7.5 20"/>
+                                    <path stroke-linecap="round" d="M19 5.5 C18.8 12 17.5 17 16.5 20"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 20 L6.5 22 L17.5 22 L16.5 20"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-sage-900">Double Wall</h3>
+                        </div>
+                        <p class="text-sage-500 leading-relaxed mb-4 text-justify">Maximum insulation with a premium feel. The air gap between walls maintains temperature longer — the choice for specialty coffee and premium venues.</p>
+                        <ul class="space-y-2 text-sm text-sage-700 mb-6">
+                            <li class="flex items-center gap-2"><span class="text-sage-500">✓</span> Maximum insulation</li>
+                            <li class="flex items-center gap-2"><span class="text-sage-500">✓</span> Premium unboxing feel</li>
+                            <li class="flex items-center gap-2"><span class="text-sage-500">✓</span> Condensation-free</li>
+                        </ul>
+                    </div>
+                    <button onclick="selectCupType('double')" class="w-full bg-sage-900 hover:bg-sage-700 text-cream font-semibold py-3 rounded-xl transition-colors">
+                        Select — Request Quote
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== QUOTE FORM ===== -->
+    <section id="quote" class="py-24 bg-sage-900">
+        <div class="max-w-2xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-cream mb-4">Request a Quote</h2>
+                <p class="text-sage-300 text-lg sm:whitespace-nowrap">Tell us about your needs and we'll get back to you within one business day.</p>
+            </div>
+            <form id="quoteForm" class="bg-cream rounded-2xl p-8 sm:p-10 shadow-xl space-y-6" novalidate>
+                <!-- Name -->
+                <div>
+                    <label for="name" class="block text-sm font-semibold text-sage-700 mb-2">Full Name *</label>
+                    <input type="text" id="name" name="name" placeholder="Jane Smith"
+                        class="w-full border border-sage-100 bg-cream-dark rounded-xl px-4 py-3 text-sage-900 placeholder-sage-300 focus:outline-none focus:ring-2 focus:ring-sage-500 transition" />
+                    <p id="nameError" class="mt-1 text-sm text-red-500 hidden">Please enter your name.</p>
+                </div>
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-sm font-semibold text-sage-700 mb-2">Email Address *</label>
+                    <input type="email" id="email" name="email" placeholder="jane@yourbrand.com"
+                        class="w-full border border-sage-100 bg-cream-dark rounded-xl px-4 py-3 text-sage-900 placeholder-sage-300 focus:outline-none focus:ring-2 focus:ring-sage-500 transition" />
+                    <p id="emailError" class="mt-1 text-sm text-red-500 hidden">Please enter a valid email address.</p>
+                </div>
+                <!-- Cup Type -->
+                <div>
+                    <label for="cupType" class="block text-sm font-semibold text-sage-700 mb-2">Cup Type *</label>
+                    <select id="cupType" name="cupType"
+                        class="w-full border border-sage-100 bg-cream-dark rounded-xl px-4 py-3 text-sage-900 focus:outline-none focus:ring-2 focus:ring-sage-500 transition appearance-none cursor-pointer">
+                        <option value="">— Select a cup type —</option>
+                        <option value="single">Single Wall</option>
+                        <option value="ripple">Ripple Wall</option>
+                        <option value="double">Double Wall</option>
+                    </select>
+                    <p id="cupTypeError" class="mt-1 text-sm text-red-500 hidden">Please select a cup type.</p>
+                </div>
+                <!-- Quantity -->
+                <div>
+                    <label for="quantity" class="block text-sm font-semibold text-sage-700 mb-2">Estimated Quantity (cartons) *</label>
+                    <input type="number" id="quantity" name="quantity" placeholder="e.g. 100" min="1"
+                        class="w-full border border-sage-100 bg-cream-dark rounded-xl px-4 py-3 text-sage-900 placeholder-sage-300 focus:outline-none focus:ring-2 focus:ring-sage-500 transition" />
+                    <p id="quantityError" class="mt-1 text-sm text-red-500 hidden">Please enter a quantity greater than 0.</p>
+                </div>
+                <!-- Message -->
+                <div>
+                    <label for="message" class="block text-sm font-semibold text-sage-700 mb-2">Additional Notes</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Tell us about your branding needs, cup sizes, delivery location, or anything else..."
+                        class="w-full border border-sage-100 bg-cream-dark rounded-xl px-4 py-3 text-sage-900 placeholder-sage-300 focus:outline-none focus:ring-2 focus:ring-sage-500 transition resize-none"></textarea>
+                </div>
+                <!-- Submit -->
+                <button type="submit" class="w-full bg-sage-900 hover:bg-sage-700 text-cream font-bold py-4 rounded-xl text-base transition-colors shadow-md">
+                    Send Quote Request
+                </button>
+                <!-- Success message -->
+                <div id="formSuccess" class="hidden bg-sage-100 border border-sage-300 rounded-xl px-6 py-5 text-center">
+                    <p class="text-2xl mb-2">🌿</p>
+                    <p class="font-bold text-sage-900 text-lg mb-1">Thank you! We'll be in touch soon.</p>
+                    <p class="text-sage-700 text-sm">Your quote request has been received. Expect a reply within one business day.</p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="bg-sage-900 border-t border-sage-700 py-10">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span class="text-xl font-bold text-cream">Nexopack</span>
+            <p class="text-sage-500 text-sm text-center">Sip sustainably. Serve beautifully. &copy; 2026 Nexopack. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a href="#features" class="text-sage-500 hover:text-sage-300 text-sm transition-colors">Features</a>
+                <a href="#products" class="text-sage-500 hover:text-sage-300 text-sm transition-colors">Products</a>
+                <a href="#quote" class="text-sage-500 hover:text-sage-300 text-sm transition-colors">Quote</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

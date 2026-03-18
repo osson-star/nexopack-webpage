@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \":*)",
+      "Bash(pip3 install openpyxl -q)",
+      "Bash(python3:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(identify /Users/ossonlau/Desktop/eco-sip-project/images/double-wall.jpeg)",
+      "Bash(sips -g pixelHeight -g pixelWidth /Users/ossonlau/Desktop/eco-sip-project/images/double-wall.jpeg)",
+      "Bash(sips -g pixelHeight -g pixelWidth /Users/ossonlau/Desktop/eco-sip-project/images/ripple-wall.png)",
+      "WebFetch(domain:id-preview-0038886c--f9266711-6906-4300-acad-a3305e5a0a26.lovable.app)",
+      "Bash(pandoc \"/Users/ossonlau/Desktop/eco-sip-project/Word Document/Nexopack_About_Us_120w.docx\" -t plain)",
+      "Bash(mv index.html products.html)",
+      "Bash(mv home.html index.html)"
+    ]
+  }
+}
