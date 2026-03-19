@@ -168,3 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el) el.addEventListener('change', () => showError(id, false));
     });
 });
+
+// ─── Navbar — ghost → frosted on scroll ──────────────────────────────────
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('.navbar-float');
+  if (nav) nav.classList.toggle('navbar-float--scrolled', window.scrollY > 60);
+});
