@@ -55,3 +55,33 @@
     transform: translateY(-5px);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.09);
 }
+
+/* ===== Navbar — frosted floating bar ===== */
+.navbar-float {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  z-index: 50;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: none;
+  /* backdrop-filter excluded from transition — not interpolatable in most browsers */
+  transition: background 0.4s ease,
+              border-color 0.4s ease,
+              box-shadow 0.4s ease;
+}
+
+.navbar-float--scrolled {
+  background: rgba(255, 255, 255, 0.84);
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+}
+
+/* Nav link colour in ghost state (over dark hero) */
+.navbar-float:not(.navbar-float--scrolled) .nav-link-item {
+  color: rgba(247, 246, 240, 0.8);
+}
