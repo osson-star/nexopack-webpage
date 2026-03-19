@@ -137,11 +137,26 @@
     <!-- ===== PRODUCT VARIANTS ===== -->
     <section id="products" class="py-24 bg-cream">
         <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <p class="text-xs uppercase font-semibold text-sage-500 mb-3" style="letter-spacing:0.15em;">Our Range</p>
-                <h2 class="font-display text-3xl sm:text-4xl font-semibold text-sage-900 mb-4">Choose Your Cup</h2>
-                <p class="text-sage-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">Three wall configurations to suit every drink, every venue, and every budget.</p>
+
+            <!-- Intro: image left + heading right -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-16">
+                <div class="relative overflow-hidden rounded-2xl" style="aspect-ratio: 4/5;">
+                    <img
+                        src="images/coffee cup in golden hour.jpg"
+                        alt="Person sipping coffee from a double-wall paper cup"
+                        class="w-full h-full object-cover"
+                        style="filter: saturate(0.85) brightness(0.97);"
+                    >
+                    <!-- Subtle sage overlay for colour harmony -->
+                    <div class="absolute inset-0 rounded-2xl" style="background: linear-gradient(160deg, hsla(143,20%,28%,0.08) 0%, transparent 60%);"></div>
+                </div>
+                <div>
+                    <p class="text-xs uppercase font-semibold text-sage-500 mb-3" style="letter-spacing:0.15em;">Our Range</p>
+                    <h2 class="font-display text-3xl sm:text-4xl font-semibold text-sage-900 mb-4">Choose Your Cup</h2>
+                    <p class="text-sage-500 text-base sm:text-lg leading-relaxed">Three wall configurations to suit every drink, every venue, and every budget.</p>
+                </div>
             </div>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
                 <!-- Single Wall -->
