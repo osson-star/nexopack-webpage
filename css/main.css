@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'DM Sans', sans-serif;
-  --font-display: 'Playfair Display', serif;
+  --font-sans: 'Inter var', 'Inter', sans-serif;
+  --font-display: 'Inter Display var', 'Inter Display', 'Inter var', sans-serif;
 
   --color-sage-100: #DFE8E1;
   --color-sage-300: #98B69E;
@@ -22,3 +22,18 @@
 
 @import "./home.css";
 @import "./styles.css";
+
+@keyframes spec-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.spec-panel-enter {
+  animation: spec-panel-in 0.39s ease-out forwards;
+}

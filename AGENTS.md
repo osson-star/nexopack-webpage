@@ -4,7 +4,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Project Overview
 
-**Nexopack** — a static two-page marketing website for a Hong Kong-based food packaging company. No build step, no package manager, no framework.
+**Nexopack** — a static multi-page marketing website for a Hong Kong-based food packaging company. No build step, no package manager, no framework.
 
 ## Running Locally
 
@@ -17,25 +17,29 @@ Open `http://localhost:3000`. The site is fully static; changes to HTML/CSS/JS a
 ## File Structure
 
 - `index.html` — Home page (hero, about, product category browser, custom design, contact)
-- `products.html` — Paper cups product page (features, cup variants, spec table, quote form)
-- `css/styles.css` — Shared custom CSS loaded only by `products.html`
-- `js/script.js` — JavaScript loaded only by `products.html`
+- `paper-material.html` — Paper material product page (features, cup variants: single/double/ripple wall + kraft soup cup, spec tables, quote form)
+- `pulp-material.html` — Pulp material product page (sugarcane/bamboo pulp cups, lids, trays & accessories, spec tables, quote form)
+- `css/styles.css` — Shared custom CSS loaded by `paper-material.html` and `pulp-material.html`
+- `js/script.js` — JavaScript loaded by `paper-material.html` and `pulp-material.html`
 
 ## Architecture: Two Distinct Styling Systems
 
-The two pages use **different** styling approaches and must not be mixed:
+The pages use **different** styling approaches and must not be mixed:
 
 - **`index.html`** — Self-contained. All styles are written as hand-crafted utility classes inside a `<style>` block in `<head>`, using CSS custom properties (`--primary`, `--fg`, `--bg`, etc.). No external stylesheet.
-- **`products.html`** — Uses Tailwind CSS loaded from CDN (`https://cdn.tailwindcss.com`) with a custom theme (sage/cream color palette) configured inline via `tailwind.config`. Supplemented by `css/styles.css` for hero gradient, scrollbar styling, and `.cup-card` hover effects.
+- **`paper-material.html` / `pulp-material.html`** — Use Tailwind CSS via the build pipeline with a custom theme (sage/cream color palette) defined in `css/main.css`. Supplemented by `css/styles.css` for hero gradient, scrollbar styling, and `.cup-card` hover effects.
 
-## JavaScript Architecture (`js/script.js` — products.html only)
+## JavaScript Architecture (`js/script.js` — paper-material.html and pulp-material.html)
 
 All logic is in plain vanilla JS, no modules or bundler:
 
-- **`specData`** — Hardcoded object containing dimensional specs (size, diameters, heights, carton dimensions) for `single`, `ripple`, and `double` wall cups.
-- **`showSpecPanel(type)` / `closeSpecPanel()`** — Dynamically renders a spec table into `#specPanel` by reading `specData[type]`.
-- **`selectCupType(type)`** — Called by "Specification" buttons on cup cards. If spec data exists, shows the panel; otherwise falls through to pre-fill the quote form and scroll to it.
-- **Quote form** — Entirely client-side. `validateQuoteForm()` checks name, email (regex), cup type, and quantity. On valid submit, the form fields are hidden and `#formSuccess` is revealed. No backend/API call is made.
+- **`specData`** — Hardcoded object containing dimensional specs for `single`, `ripple`, `double` wall cups, and `soupCup`.
+- **`pulpSpecData`** — Hardcoded object containing specs for pulp `cups`, `lids`, and `trays`.
+- **`showSpecPanel(type)` / `closeSpecPanel()`** — Renders a spec table into `#specPanel` (below the top row of paper cup cards).
+- **`showSoupCupSpecPanel()` / `closeSoupCupSpecPanel()`** — Renders the soup cup spec into `#soupCupSpecPanel` (below the kraft soup cup card).
+- **`showPulpSpecPanel(type)` / `closePulpSpecPanel()`** — Renders a spec table into `#pulpSpecPanel` on the pulp material page.
+- **`selectCupType(type)`** — Called by "Specification" buttons. Routes to the correct panel based on type.
+- **Quote form** — Entirely client-side. `validateQuoteForm()` checks name, email (regex), product type, and quantity. On valid submit, form fields are hidden and `#formSuccess` is revealed. No backend/API call is made.
 
 ## Homepage Product Tab System (inline in `index.html`)
 
@@ -43,7 +47,7 @@ The `products` array and `showTab(material, btn)` function are defined inside a 
 
 ## Color Tokens
 
-`products.html` / Tailwind theme:
+`paper-material.html` / `pulp-material.html` / Tailwind theme:
 - `sage-100/300/500/700/900` — muted greens (UI elements, text, backgrounds)
 - `cream` (`#F7F6F0`) / `cream-dark` (`#ECEAE3`) — off-white backgrounds
 

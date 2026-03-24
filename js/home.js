@@ -1,7 +1,7 @@
 // js/home.js — Homepage product grid and tab switching
 
 const products = [
-  { name: "Paper Cups", description: "Single wall, double wall, and ripple wall — premium cups with PE or aqueous coating and custom branding.", material: "paper", link: "products.html" },
+  { name: "Paper Cups", description: "Single wall, double wall, and ripple wall — premium cups with PE or aqueous coating and custom branding.", material: "paper", link: "paper-material.html" },
   { name: "Paper Straws", description: "Biodegradable straws in various colours and diameters.", material: "paper" },
   { name: "Napkins", description: "1-ply and 2-ply napkins. White, kraft, and custom print available.", material: "paper" },
   { name: "Pizza Boxes", description: "Corrugated kraft pizza boxes in 8\u2033 to 18\u2033 sizes.", material: "paper" },
@@ -26,8 +26,8 @@ const products = [
   { name: "", description: "", material: "husk" },
   { name: "", description: "", material: "husk" },
   { name: "", description: "", material: "husk" },
-  { name: "Bagasse / Sugarcane Cup", description: "", material: "bagasse" },
-  { name: "Bagasse / Sugarcane Lid", description: "", material: "bagasse" },
+  { name: "Bagasse / Sugarcane Cup", description: "", material: "bagasse", link: "pulp-material.html" },
+  { name: "Bagasse / Sugarcane Lid", description: "", material: "bagasse", link: "pulp-material.html" },
   { name: "", description: "", material: "bagasse" },
   { name: "", description: "", material: "bagasse" },
   { name: "", description: "", material: "bagasse" },

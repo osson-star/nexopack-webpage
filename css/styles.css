@@ -81,9 +81,14 @@
     -webkit-backdrop-filter: blur(16px) saturate(1.4);
 }
 
-/* Nav link colour in ghost state (over dark hero) */
+/* Nav link colour in ghost state (over light hero) */
 .navbar-float:not(.navbar-float--scrolled) .nav-link-item {
-    color: rgba(247, 246, 240, 0.8);
+    color: rgba(0, 0, 0, 0.6);
+}
+
+/* Logo colour in ghost state (over light hero) */
+.navbar-float:not(.navbar-float--scrolled) .navbar-logo {
+    color: #000000;
 }
 
 /* ===== Modals ===== */
