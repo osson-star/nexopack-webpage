@@ -85,3 +85,51 @@
 .navbar-float:not(.navbar-float--scrolled) .nav-link-item {
     color: rgba(247, 246, 240, 0.8);
 }
+
+/* ===== Modals ===== */
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modal-slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal-overlay {
+  animation: modal-fade-in 0.2s ease;
+}
+
+.modal-container {
+  animation: modal-slide-up 0.25s ease;
+}
+
+.pill {
+  cursor: pointer;
+  border: 1px solid #d4ddd5;
+  border-radius: 9999px;
+  padding: 0.375rem 1rem;
+  font-size: 0.875rem;
+  background: #F7F6F0;
+  color: #243D2F;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  user-select: none;
+}
+
+.pill:hover {
+  border-color: #4A6B58;
+  background: #DFE8E1;
+}
+
+.pill-active {
+  background: #4A6B58;
+  border-color: #4A6B58;
+  color: #F7F6F0;
+}
+
+.pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
