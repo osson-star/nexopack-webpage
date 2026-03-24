@@ -104,70 +104,9 @@ function selectCupType(type) {
         showSpecPanel(type);
         return;
     }
-    // Otherwise scroll to quote form
-    const select = document.getElementById('cupType');
-    if (select) {
-        select.value = type;
-        document.getElementById('cupTypeError').classList.add('hidden');
-    }
-    document.getElementById('quote').scrollIntoView({ behavior: 'smooth' });
+    // Otherwise open the quote modal
+    openModal('modal-quote');
 }
-
-// ─── Quote form — validation & submit ───────────────────────────────────────
-
-function showError(fieldId, show) {
-    const el = document.getElementById(fieldId + 'Error');
-    if (el) el.classList.toggle('hidden', !show);
-}
-
-function validateQuoteForm() {
-    const name     = document.getElementById('name').value.trim();
-    const email    = document.getElementById('email').value.trim();
-    const cupType  = document.getElementById('cupType').value;
-    const quantity = parseInt(document.getElementById('quantity').value, 10);
-
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    const nameOk     = name.length > 0;
-    const emailOk    = emailPattern.test(email);
-    const cupTypeOk  = cupType !== '';
-    const quantityOk = !isNaN(quantity) && quantity > 0;
-
-    showError('name',     !nameOk);
-    showError('email',    !emailOk);
-    showError('cupType',  !cupTypeOk);
-    showError('quantity', !quantityOk);
-
-    return nameOk && emailOk && cupTypeOk && quantityOk;
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('quoteForm');
-    if (!form) return;
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        if (!validateQuoteForm()) return;
-
-        // Hide form fields, show success message
-        Array.from(form.elements).forEach(el => {
-            if (el.id !== 'formSuccess') el.closest('div')?.classList.add('hidden');
-        });
-
-        // Hide the submit button specifically (it's a direct child button)
-        form.querySelector('button[type="submit"]').classList.add('hidden');
-
-        document.getElementById('formSuccess').classList.remove('hidden');
-    });
-
-    // Clear field errors on input
-    ['name', 'email', 'cupType', 'quantity'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.addEventListener('input', () => showError(id, false));
-        if (el) el.addEventListener('change', () => showError(id, false));
-    });
-});
 
 // ─── Navbar — ghost → frosted on scroll ──────────────────────────────────
 window.addEventListener('scroll', () => {
