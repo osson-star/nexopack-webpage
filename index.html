@@ -177,8 +177,8 @@
         <h2 class="font-display text-3xl sm:text-4xl font-semibold text-cream mb-4">Let's Work Together</h2>
         <p class="max-w-lg mx-auto mb-10 leading-relaxed opacity-80">Whether you need bulk orders, low volumes, or custom packaging solutions, our team is ready to help. Contact us for competitive pricing and fast delivery.</p>
         <div class="flex flex-wrap justify-center gap-4 mb-12">
-            <a href="products.html#quote" class="inline-flex items-center gap-1.5 bg-cream text-sage-900 hover:opacity-90 font-medium px-8 py-3 rounded-full text-sm transition-all">Request a Quote &rarr;</a>
-            <a href="mailto:info@nexopack.io" class="inline-flex items-center gap-1.5 text-cream font-medium px-8 py-3 rounded-full text-sm transition-all hover:bg-white/10 border border-cream/30">Email Us</a>
+            <button onclick="openModal('modal-quote')" class="inline-flex items-center gap-1.5 bg-cream text-sage-900 hover:opacity-90 font-medium px-8 py-3 rounded-full text-sm transition-all">Request a Quote &rarr;</button>
+            <button onclick="openModal('modal-email')" class="inline-flex items-center gap-1.5 text-cream font-medium px-8 py-3 rounded-full text-sm transition-all hover:bg-white/10 border border-cream/30">Email Us</button>
         </div>
         <div class="flex flex-wrap justify-center gap-8 text-sm opacity-70">
             <a href="mailto:info@nexopack.io" class="flex items-center gap-2 text-cream transition-colors hover:opacity-100">
@@ -216,6 +216,140 @@
         <div class="mt-16 pt-8 text-center text-xs border-t border-cream/20 opacity-60">&copy; 2026 Nexopack. All rights reserved.</div>
     </div>
 </footer>
+
+<script src="js/modals.js" defer></script>
+
+<!-- ===== Email Us Modal ===== -->
+<div id="modal-email" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center p-4" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);">
+  <div class="modal-container bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 relative">
+    <button onclick="closeModal('modal-email')" class="absolute top-4 right-4 text-black/40 hover:text-black text-xl leading-none">&times;</button>
+    <div id="contact-form-body">
+      <h3 class="font-display text-2xl font-bold text-black mb-1">Email Us</h3>
+      <p class="text-sm text-black/50 mb-6">We'll get back to you within one business day.</p>
+      <form id="contact-form" novalidate class="space-y-4">
+        <div>
+          <input id="contact-name" type="text" placeholder="Your Name" class="w-full border border-black/15 rounded-full px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-cream" />
+          <p id="contact-name-error" class="mt-1 text-xs text-red-500 hidden"></p>
+        </div>
+        <div>
+          <input id="contact-company" type="text" placeholder="Company Name" class="w-full border border-black/15 rounded-full px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-cream" />
+          <p id="contact-company-error" class="mt-1 text-xs text-red-500 hidden"></p>
+        </div>
+        <div>
+          <input id="contact-email" type="email" placeholder="Email Address" class="w-full border border-black/15 rounded-full px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-cream" />
+          <p id="contact-email-error" class="mt-1 text-xs text-red-500 hidden"></p>
+        </div>
+        <div>
+          <textarea id="contact-message" rows="4" placeholder="Your message&hellip;" class="w-full border border-black/15 rounded-2xl px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-cream resize-none"></textarea>
+          <p id="contact-message-error" class="mt-1 text-xs text-red-500 hidden"></p>
+        </div>
+        <p id="contact-form-error" class="text-sm text-red-500 hidden">Something went wrong &mdash; please try again or email us directly at info@nexopack.io</p>
+        <button type="submit" class="w-full bg-sage-700 hover:bg-sage-900 text-cream font-medium py-3 rounded-full text-sm transition-colors">Send Message</button>
+      </form>
+    </div>
+    <div id="contact-success" class="hidden text-center py-8">
+      <p class="text-3xl mb-4">✉️</p>
+      <p class="font-display text-lg font-bold text-black mb-2">Message sent!</p>
+      <p class="text-sm text-black/60">Thanks for reaching out! We'll get back to you shortly.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Request a Quote Modal ===== -->
+<div id="modal-quote" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center p-4" style="background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);">
+  <div class="modal-container bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8 relative overflow-y-auto" style="max-height: 90vh;">
+    <button onclick="closeModal('modal-quote')" class="absolute top-4 right-4 text-black/40 hover:text-black text-xl leading-none">&times;</button>
+    <div id="quote-form-body">
+      <h3 class="font-display text-2xl font-bold text-black mb-1">Request a Quote</h3>
+      <p class="text-sm text-black/50 mb-6">Tell us what you need and we'll prepare a quotation.</p>
+      <form id="quote-modal-form" novalidate class="space-y-6">
+
+        <div>
+          <p class="text-sm font-medium text-black mb-2">Product Category</p>
+          <div class="pill-group" data-target="q-product-category">
+            <button type="button" class="pill" data-value="Cups">Cups</button>
+            <button type="button" class="pill" data-value="Containers">Containers</button>
+            <button type="button" class="pill" data-value="Bags">Bags</button>
+            <button type="button" class="pill" data-value="Lids">Lids</button>
+            <button type="button" class="pill" data-value="Other">Other</button>
+          </div>
+          <input type="hidden" id="q-product-category" />
+          <p id="q-product-category-error" class="mt-1 text-xs text-red-500 hidden"></p>
+        </div>
+
+        <div>
+          <p class="text-sm font-medium text-black mb-2">Material</p>
+          <div class="pill-group" data-target="q-material">
+            <button type="button" class="pill" data-value="Paper">Paper</button>
+            <button type="button" class="pill" data-value="Plastic">Plastic</button>
+            <button type="button" class="pill" data-value="Bamboo">Bamboo</button>
+            <button type="button" class="pill" data-value="Pulp">Pulp</button>
+            <button type="button" class="pill" data-value="No Preference">No Preference</button>
+          </div>
+          <input type="hidden" id="q-material" />
+          <p id="q-material-error" class="mt-1 text-xs text-red-500 hidden"></p>
+        </div>
+
+        <div>
+          <p class="text-sm font-medium text-black mb-2">Estimated Quantity</p>
+          <div class="pill-group" data-target="q-quantity">
+            <button type="button" class="pill" data-value="&lt;1,000">&lt;1,000</button>
+            <button type="button" class="pill" data-value="1,000&ndash;5,000">1,000&ndash;5,000</button>
+            <button type="button" class="pill" data-value="5,000&ndash;10,000">5,000&ndash;10,000</button>
+            <button type="button" class="pill" data-value="10,000+">10,000+</button>
+          </div>
+          <input type="hidden" id="q-quantity" />
+          <p id="q-quantity-error" class="mt-1 text-xs text-red-500 hidden"></p>
+        </div>
+
+        <div>
+          <p class="text-sm font-medium text-black mb-2">Delivery Location</p>
+          <div class="pill-group" data-target="q-delivery">
+            <button type="button" class="pill" data-value="Local (Hong Kong)">Local (Hong Kong)</button>
+            <button type="button" class="pill" data-value="Overseas">Overseas</button>
+          </div>
+          <input type="hidden" id="q-delivery" />
+          <p id="q-delivery-error" class="mt-1 text-xs text-red-500 hidden"></p>
+        </div>
+
+        <div>
+          <p class="text-sm font-medium text-black mb-2">Custom Printing?</p>
+          <div class="pill-group" data-target="q-custom-printing">
+            <button type="button" class="pill" data-value="Yes">Yes</button>
+            <button type="button" class="pill" data-value="No">No</button>
+            <button type="button" class="pill" data-value="Not Sure">Not Sure</button>
+          </div>
+          <input type="hidden" id="q-custom-printing" />
+          <p id="q-custom-printing-error" class="mt-1 text-xs text-red-500 hidden"></p>
+        </div>
+
+        <hr class="border-black/10" />
+        <p class="text-sm font-medium text-black">Your Contact Details</p>
+
+        <div>
+          <input id="q-name" type="text" placeholder="Your Name" class="w-full border border-black/15 rounded-full px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-cream" />
+          <p id="q-name-error" class="mt-1 text-xs text-red-500 hidden"></p>
+        </div>
+        <div>
+          <input id="q-company" type="text" placeholder="Company Name" class="w-full border border-black/15 rounded-full px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-cream" />
+          <p id="q-company-error" class="mt-1 text-xs text-red-500 hidden"></p>
+        </div>
+        <div>
+          <input id="q-email" type="email" placeholder="Email Address" class="w-full border border-black/15 rounded-full px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-sage-500 bg-cream" />
+          <p id="q-email-error" class="mt-1 text-xs text-red-500 hidden"></p>
+        </div>
+
+        <p id="quote-form-error" class="text-sm text-red-500 hidden">Something went wrong &mdash; please try again or email us directly at info@nexopack.io</p>
+        <button type="submit" class="w-full bg-sage-700 hover:bg-sage-900 text-cream font-medium py-3 rounded-full text-sm transition-colors">Submit Request</button>
+      </form>
+    </div>
+    <div id="quote-success" class="hidden text-center py-8">
+      <p class="text-3xl mb-4">📋</p>
+      <p class="font-display text-lg font-bold text-black mb-2">Request received!</p>
+      <p class="text-sm text-black/60">Your quote request has been received. We'll prepare a quotation and be in touch soon.</p>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
