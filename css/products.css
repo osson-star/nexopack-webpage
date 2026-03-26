@@ -1,0 +1,701 @@
+/* ===== Products Page Styles ===== */
+
+/* --- Sidebar --- */
+.sidebar-item {
+  position: relative;
+  padding-left: 1.25rem;
+  transition: color 0.15s, background-color 0.15s;
+}
+
+.sidebar-item::before {
+  content: '';
+  position: absolute;
+  left: 0.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-sage-300);
+  background: transparent;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.sidebar-item-active {
+  color: var(--color-sage-700);
+}
+
+.sidebar-item-active::before {
+  background: var(--color-sage-700);
+  border-color: var(--color-sage-700);
+}
+
+.sidebar-item:hover:not(.sidebar-item-active)::before {
+  border-color: var(--color-sage-500);
+}
+
+/* --- Sidebar collapsible categories --- */
+.sidebar-category-heading {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sidebar-chevron {
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.sidebar-chevron.expanded {
+  transform: rotate(90deg);
+}
+
+.sidebar-products {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.25s ease;
+}
+
+.sidebar-products.open {
+  max-height: 200px;
+  opacity: 1;
+}
+
+.sidebar-products li {
+  transform: translateX(8px);
+  opacity: 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.sidebar-products.open li {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.sidebar-products.open li:nth-child(1) { transition-delay: 0.05s; }
+.sidebar-products.open li:nth-child(2) { transition-delay: 0.1s; }
+.sidebar-products.open li:nth-child(3) { transition-delay: 0.15s; }
+.sidebar-products.open li:nth-child(4) { transition-delay: 0.2s; }
+.sidebar-products.open li:nth-child(5) { transition-delay: 0.25s; }
+
+/* --- Sidebar disabled (Coming Soon) --- */
+.sidebar-item-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* Desktop sticky sidebar is now handled by Tailwind utilities on the aside:
+   lg:sticky lg:top-[6rem] lg:max-h-[calc(100vh-6rem)] */
+
+/* --- Mobile drawer --- */
+.sidebar-drawer {
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.sidebar-drawer.open {
+  transform: translateX(0);
+}
+
+@media (min-width: 1024px) {
+  .sidebar-drawer {
+    transform: none !important;
+  }
+}
+
+.drawer-backdrop {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.drawer-backdrop.open {
+  opacity: 1;
+}
+
+/* --- Spec Table (minimal style for floating cards) --- */
+.spec-table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.spec-table th {
+  text-align: left;
+  padding: 0.875rem 1.125rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.spec-table td {
+  padding: 0.875rem 1.125rem;
+  font-size: 0.875rem;
+}
+
+.spec-table thead {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 8.5rem;
+  z-index: 5;
+}
+
+.spec-table thead th {
+  background: white;
+}
+
+.spec-table tbody tr {
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  transition: background-color 0.15s;
+}
+
+.spec-table tbody tr:hover {
+  background: var(--color-cream);
+}
+
+/* --- Subcategory divider row --- */
+.spec-table .subcat-row td {
+  padding: 1.5rem 1rem 0.625rem;
+  border-top: 2px solid rgba(0, 0, 0, 0.06);
+  background: transparent;
+}
+
+.spec-table .subcat-row:hover {
+  background: transparent;
+}
+
+.subcat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-sage-700);
+  background: rgba(0, 80, 32, 0.07);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+}
+
+/* Ice cream rows — same style as standard rows */
+
+/* --- Sticky sizes header --- */
+.sizes-sticky-header {
+  position: sticky;
+  top: 5.5rem;
+  z-index: 10;
+  background: white;
+  padding-top: 0.5rem;
+  padding-bottom: 0.75rem;
+  margin-left: -1.75rem;
+  margin-right: -1.75rem;
+  padding-left: 1.75rem;
+  padding-right: 1.75rem;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* --- Shape filter buttons --- */
+.shape-filter-btn {
+  padding: 0.375rem 1rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+  background: transparent;
+  color: rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.shape-filter-btn:hover:not(.shape-filter-active) {
+  border-color: rgba(0, 0, 0, 0.2);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.shape-filter-active {
+  background: var(--color-sage-700);
+  color: var(--color-cream);
+  border-color: var(--color-sage-700);
+  box-shadow: 0 2px 8px rgba(0, 80, 32, 0.2);
+}
+
+/* --- Wall-type tab strip (sliding underline) --- */
+.wall-tab-strip {
+  display: flex;
+  gap: 0;
+  position: relative;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.06);
+  margin-top: 2rem;
+}
+
+.wall-tab-btn {
+  padding: 0.875rem 1.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.35);
+  transition: color 0.2s ease;
+  font-family: inherit;
+  position: relative;
+}
+
+.wall-tab-btn:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.wall-tab-btn.wall-tab-active {
+  color: var(--color-sage-700);
+  font-weight: 600;
+}
+
+.wall-tab-indicator {
+  position: absolute;
+  bottom: -2px;
+  height: 2.5px;
+  background: var(--color-sage-700);
+  border-radius: 2px;
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Wall-type description fade --- */
+.wall-tab-desc {
+  font-size: 0.875rem;
+  color: rgba(0, 0, 0, 0.5);
+  line-height: 1.6;
+  margin: 1.25rem 0 1.5rem;
+  min-height: 1.375rem;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.wall-tab-desc.fading {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* --- Sizes table row stagger animation --- */
+@keyframes spec-row-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.spec-row-animate {
+  opacity: 0;
+  animation: spec-row-in 0.3s ease-out forwards;
+}
+
+/* --- Content animations --- */
+@keyframes content-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.content-enter {
+  animation: content-fade-in 0.35s ease-out forwards;
+}
+
+/* --- Quote List Modal --- */
+.ql-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.ql-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ql-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 60;
+  transform: translate(-50%, -48%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+  width: min(92vw, 780px);
+  max-height: 88vh;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.18);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.ql-panel.open {
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ql-header {
+  padding: 1.5rem 1.75rem 1.25rem;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.ql-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+.ql-count-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: var(--color-sage-700);
+  color: var(--color-cream);
+  padding: 0.125rem 0.5625rem;
+  border-radius: 999px;
+}
+.ql-close {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.625rem;
+  border: none;
+  background: rgba(0,0,0,0.04);
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.ql-close:hover {
+  background: rgba(0,0,0,0.08);
+  color: black;
+}
+
+.ql-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.ql-section {
+  padding: 1.25rem 1.75rem 0.5rem;
+}
+.ql-section-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(0,0,0,0.3);
+  margin-bottom: 1rem;
+}
+
+.ql-item {
+  background: #F5F6F8;
+  border-radius: 0.875rem;
+  padding: 1.125rem 1.25rem;
+  margin-bottom: 0.75rem;
+}
+.ql-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.875rem;
+}
+.ql-item-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: black;
+}
+.ql-shape-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-sage-700);
+  background: rgba(0, 80, 32, 0.07);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.ql-item-spec {
+  font-size: 0.75rem;
+  color: rgba(0,0,0,0.45);
+  margin-top: 0.125rem;
+}
+.ql-item-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(0,0,0,0.25);
+  transition: color 0.15s;
+  padding: 0.25rem;
+}
+.ql-item-remove:hover {
+  color: #dc2626;
+}
+
+.ql-item-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 0.625rem;
+}
+@media (max-width: 600px) {
+  .ql-item-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.ql-field label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(0,0,0,0.35);
+  margin-bottom: 0.375rem;
+}
+.ql-field input[type="number"],
+.ql-field select {
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  font-family: inherit;
+  background: white;
+  transition: border-color 0.15s;
+  color: #1a1a1a;
+}
+.ql-field input:focus {
+  outline: none;
+  border-color: var(--color-sage-500);
+}
+.ql-field select:focus {
+  outline: none;
+  border-color: rgba(0,0,0,0.1);
+}
+
+.ql-field-check {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-top: 1.25rem;
+}
+.ql-field-check input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--color-sage-700);
+  cursor: pointer;
+  margin: 0;
+}
+.ql-field-check span {
+  font-size: 0.8rem;
+  color: rgba(0,0,0,0.6);
+  margin-left: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.ql-upload-zone {
+  margin-top: 0.75rem;
+  border: 1.5px dashed rgba(0,0,0,0.12);
+  border-radius: 0.625rem;
+  padding: 1rem 1.25rem;
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.ql-upload-zone:hover {
+  border-color: var(--color-sage-500);
+  background: rgba(0,80,32,0.02);
+}
+.ql-upload-zone.visible {
+  display: flex;
+}
+.ql-upload-zone-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  border-radius: 0.5rem;
+  background: #F5F6F8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0,0,0,0.3);
+}
+.ql-upload-zone-text p {
+  font-size: 0.8rem;
+  color: rgba(0,0,0,0.5);
+  line-height: 1.4;
+}
+.ql-upload-zone-text p strong {
+  color: var(--color-sage-700);
+  font-weight: 600;
+}
+.ql-upload-zone-text .hint {
+  font-size: 0.68rem;
+  color: rgba(0,0,0,0.3);
+  margin-top: 0.125rem;
+}
+
+.ql-upload-fname {
+  margin-top: 0.5rem;
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--color-sage-700);
+  font-weight: 500;
+}
+.ql-upload-fname.visible {
+  display: flex;
+}
+.ql-upload-fname .ql-remove-file {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(0,0,0,0.3);
+  padding: 0.125rem;
+  transition: color 0.15s;
+}
+.ql-upload-fname .ql-remove-file:hover {
+  color: #dc2626;
+}
+
+.ql-divider {
+  height: 1px;
+  background: rgba(0,0,0,0.06);
+  margin: 0.5rem 1.75rem 0;
+}
+
+.ql-contact {
+  padding: 1.25rem 1.75rem 1.5rem;
+}
+.ql-contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+@media (max-width: 500px) {
+  .ql-contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.ql-contact-grid .ql-full-width {
+  grid-column: 1 / -1;
+}
+.ql-contact-grid label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(0,0,0,0.35);
+  margin-bottom: 0.375rem;
+}
+.ql-contact-grid input,
+.ql-contact-grid textarea {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  background: white;
+  transition: border-color 0.15s;
+  color: #1a1a1a;
+  resize: vertical;
+}
+.ql-contact-grid input:focus,
+.ql-contact-grid textarea:focus {
+  outline: none;
+  border-color: var(--color-sage-500);
+}
+.ql-contact-grid textarea {
+  min-height: 3.75rem;
+}
+
+.ql-footer {
+  padding: 1rem 1.75rem 1.25rem;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  background: white;
+}
+.ql-footer-hint {
+  font-size: 0.75rem;
+  color: rgba(0,0,0,0.35);
+  max-width: 17.5rem;
+  line-height: 1.5;
+}
+.ql-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: var(--color-sage-700);
+  color: var(--color-cream);
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 0.75rem 1.75rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(0,80,32,0.25);
+}
+.ql-submit:hover {
+  background: var(--color-sage-900);
+  box-shadow: 0 4px 20px rgba(0,80,32,0.35);
+}
+
+.ql-empty {
+  text-align: center;
+  padding: 3rem 1.75rem;
+}
+.ql-empty-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 auto 1rem;
+  background: #F5F6F8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0,0,0,0.2);
+}
+.ql-empty p {
+  font-size: 0.9rem;
+  color: rgba(0,0,0,0.35);
+  line-height: 1.6;
+}
+.ql-empty .ql-empty-hint {
+  font-size: 0.78rem;
+  margin-top: 0.25rem;
+  color: rgba(0,0,0,0.25);
+}
+
+/* Add button states handled by inline Tailwind classes */

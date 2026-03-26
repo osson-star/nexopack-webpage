@@ -92,7 +92,8 @@ module.exports = async function handler(req, res) {
 
   const {
     productCategory, material, quantity, deliveryLocation,
-    customPrinting, name, company, email
+    customPrinting, name, company, email,
+    printingFileData, printingFileName
   } = req.body || {};
 
   if (
@@ -115,18 +116,27 @@ module.exports = async function handler(req, res) {
   const today = new Date().toISOString().slice(0, 10);
   const filename = `Nexopack-Quote-${sanitiseFilename(company)}-${today}.xlsx`;
 
+  // Build email attachments
+  const attachments = [{ filename: filename, content: excelBuffer }];
+  if (printingFileData && printingFileName) {
+    try {
+      const base64Data = printingFileData.includes(',')
+        ? printingFileData.split(',')[1]
+        : printingFileData;
+      attachments.push({
+        filename: printingFileName,
+        content: Buffer.from(base64Data, 'base64')
+      });
+    } catch (_) { /* skip if malformed */ }
+  }
+
   try {
     await resend.emails.send({
       from: 'Nexopack <noreply@nexopack.io>',
       to: 'info@nexopack.io',
       subject: `New Quote Request from ${name} (${company})`,
       text: `New quote request received. See attached Excel file.\n\nName: ${name}\nCompany: ${company}\nEmail: ${email}\nProduct: ${productCategory}\nMaterial: ${material}\nQuantity: ${quantity}\nLocation: ${deliveryLocation}\nCustom Printing: ${customPrinting}`,
-      attachments: [
-        {
-          filename: filename,
-          content: excelBuffer
-        }
-      ]
+      attachments: attachments
     });
   } catch (err) {
     return res.status(500).json({ error: 'Failed to send email' });

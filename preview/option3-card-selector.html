@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option 3 — Elevated Card Selector</title>
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<style>
+  :root {
+    --sage-100: #abbeb2; --sage-300: #6a9d7d; --sage-500: #317a4d;
+    --sage-700: #005020; --sage-900: #003114;
+    --cream: #F7F6F0; --cream-dark: #ECEAE3;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter var', 'Inter', sans-serif;
+    background: white; color: #1a1a1a;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--sage-300); color: white; }
+
+  .option-badge {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: var(--sage-700); color: var(--cream);
+    text-align: center; padding: 10px 16px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  .option-badge span { opacity: 0.6; font-weight: 400; }
+
+  .product-area { max-width: 720px; margin: 80px auto 60px; padding: 0 24px; }
+  .product-title {
+    font-family: 'Inter Display var', 'Inter Display', 'Inter var', sans-serif;
+    font-size: clamp(1.875rem, 4vw, 2.25rem);
+    font-weight: 700; letter-spacing: -0.02em; color: black;
+  }
+  .product-tagline { margin-top: 12px; font-size: 1rem; color: rgba(0,0,0,0.6); line-height: 1.6; max-width: 560px; }
+  .product-desc { margin-top: 8px; font-size: 0.875rem; color: rgba(0,0,0,0.45); line-height: 1.6; max-width: 560px; }
+
+  /* ===== Card Selector ===== */
+  .card-selector {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin-top: 32px; margin-bottom: 28px;
+  }
+  @media (max-width: 540px) {
+    .card-selector { grid-template-columns: 1fr; }
+  }
+  .wall-card {
+    position: relative; padding: 18px 18px 18px 22px;
+    border-radius: 14px; cursor: pointer;
+    border: 1.5px solid rgba(0,0,0,0.08);
+    background: white;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+  .wall-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: transparent; border-radius: 0 4px 4px 0;
+    transition: background 0.25s ease;
+  }
+  .wall-card:hover:not(.wall-card-active) {
+    border-color: rgba(0,0,0,0.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .wall-card-active {
+    border-color: var(--sage-300);
+    box-shadow: 0 4px 24px rgba(0,80,32,0.12);
+    transform: scale(1.02);
+  }
+  .wall-card-active::before { background: var(--sage-700); }
+  .wall-card-name {
+    font-weight: 600; font-size: 0.875rem; color: black;
+    margin-bottom: 6px;
+    transition: color 0.2s ease;
+  }
+  .wall-card-active .wall-card-name { color: var(--sage-700); }
+  .wall-card-snippet {
+    font-size: 0.78rem; color: rgba(0,0,0,0.4);
+    line-height: 1.5; display: -webkit-box;
+    -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .spec-card {
+    background: white; border-radius: 16px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    padding: 28px; margin-bottom: 20px;
+  }
+  .spec-card-label {
+    font-family: 'Inter Display var', 'Inter Display', 'Inter var', sans-serif;
+    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--sage-500); margin-bottom: 20px;
+  }
+
+  .spec-table { border-collapse: collapse; width: 100%; }
+  .spec-table th {
+    text-align: left; padding: 10px 16px; font-weight: 600;
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 0.05em; color: rgba(0,0,0,0.35);
+  }
+  .spec-table thead { border-bottom: 2px solid rgba(0,0,0,0.08); }
+  .spec-table td { padding: 12px 16px; font-size: 0.875rem; color: rgba(0,0,0,0.55); }
+  .spec-table td:first-child { font-weight: 500; color: black; }
+  .spec-table tbody tr { border-top: 1px solid rgba(0,0,0,0.05); }
+  .spec-table tbody tr:hover { background: var(--cream); }
+
+  @keyframes row-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .row-animate { opacity: 0; animation: row-in 0.3s ease-out forwards; }
+
+  .page-bg { background: var(--cream); min-height: 100vh; padding-bottom: 60px; }
+  .header-bg { background: white; padding-top: 56px; }
+</style>
+</head>
+<body>
+<div class="option-badge">Option 3 — Elevated Card Selector <span>| Mini preview cards with accent bar and lift</span></div>
+
+<div class="header-bg">
+  <div class="product-area" style="margin-bottom:0; padding-bottom: 32px;">
+    <p style="font-size:0.75rem; font-weight:600; text-transform:uppercase; letter-spacing:0.25em; color:var(--sage-500); margin-bottom:12px;">Product Catalog</p>
+    <h1 class="product-title">Paper Cup</h1>
+    <p class="product-tagline">Premium single-use hot &amp; cold cups for cafes, restaurants, and branded chains.</p>
+    <p class="product-desc">Available in single wall, double wall, and ripple wall constructions.</p>
+  </div>
+</div>
+
+<div class="page-bg">
+  <div class="product-area" style="margin-top: 0; padding-top: 8px;">
+
+    <div class="card-selector" id="card-selector">
+      <div class="wall-card wall-card-active" data-wall="single">
+        <p class="wall-card-name">Single Wall</p>
+        <p class="wall-card-snippet">Standard single-layer construction. Lightweight and cost-effective.</p>
+      </div>
+      <div class="wall-card" data-wall="double">
+        <p class="wall-card-name">Double Wall</p>
+        <p class="wall-card-snippet">Two layers with an insulating air gap. No sleeve needed.</p>
+      </div>
+      <div class="wall-card" data-wall="ripple">
+        <p class="wall-card-name">Ripple Wall</p>
+        <p class="wall-card-snippet">Outer ripple layer for superior insulation and grip.</p>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <p class="spec-card-label">Available Sizes</p>
+      <div style="overflow-x:auto;">
+        <table class="spec-table">
+          <thead><tr><th>Size</th><th>Top Dia.</th><th>Height</th><th>Capacity</th></tr></thead>
+          <tbody id="sizes-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var DATA = {
+  single: { sizes: [['4 oz','62 mm','65 mm','120 ml'],['8 oz','80 mm','90 mm','240 ml'],['12 oz','90 mm','108 mm','350 ml'],['16 oz','90 mm','135 mm','470 ml'],['22 oz','90 mm','155 mm','650 ml']] },
+  double: { sizes: [['4 oz','62 mm','68 mm','120 ml'],['8 oz','80 mm','92 mm','240 ml'],['12 oz','90 mm','110 mm','350 ml'],['16 oz','90 mm','138 mm','470 ml']] },
+  ripple: { sizes: [['8 oz','80 mm','95 mm','240 ml'],['12 oz','90 mm','112 mm','350 ml'],['16 oz','90 mm','140 mm','470 ml'],['22 oz','90 mm','158 mm','650 ml']] }
+};
+
+function buildRows(sizes, tbody) {
+  tbody.textContent = '';
+  sizes.forEach(function(r, i) {
+    var tr = document.createElement('tr');
+    tr.className = 'row-animate';
+    tr.style.animationDelay = (i * 0.04) + 's';
+    r.forEach(function(val) {
+      var td = document.createElement('td');
+      td.textContent = val;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+}
+
+document.querySelectorAll('.wall-card').forEach(function(card) {
+  card.addEventListener('click', function() {
+    document.querySelectorAll('.wall-card').forEach(function(c) { c.classList.remove('wall-card-active'); });
+    card.classList.add('wall-card-active');
+    buildRows(DATA[card.dataset.wall].sizes, document.getElementById('sizes-body'));
+  });
+});
+
+buildRows(DATA.single.sizes, document.getElementById('sizes-body'));
+</script>
+</body>
+</html>

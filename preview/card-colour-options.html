@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview — Item Card Background Colours</title>
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<style>
+  :root {
+    --sage-700: #005020;
+    --cream: #F7F6F0;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter var', 'Inter', sans-serif;
+    background: white; color: #1a1a1a;
+    -webkit-font-smoothing: antialiased;
+    padding: 40px 24px 60px;
+  }
+
+  h1 {
+    font-size: 1.1rem; font-weight: 700; text-align: center;
+    letter-spacing: -0.01em; margin-bottom: 8px;
+  }
+  .subtitle {
+    text-align: center; font-size: 0.8rem; color: rgba(0,0,0,0.4);
+    margin-bottom: 40px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 28px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .option {
+    border: 1.5px solid rgba(0,0,0,0.06);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .option-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .option-label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .option-hex {
+    font-size: 0.7rem; font-weight: 500; color: rgba(0,0,0,0.35);
+    font-family: monospace;
+  }
+
+  /* Simulated modal interior */
+  .option-body { padding: 20px; background: white; }
+
+  .item-card {
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .item-name {
+    font-size: 0.85rem; font-weight: 600; color: black; margin-bottom: 2px;
+  }
+  .item-spec {
+    font-size: 0.7rem; color: rgba(0,0,0,0.4); margin-bottom: 12px;
+  }
+  .item-fields {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }
+  .field-group label {
+    display: block; font-size: 0.6rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: rgba(0,0,0,0.3); margin-bottom: 4px;
+  }
+  .field-group input, .field-group select {
+    width: 100%; padding: 7px 9px;
+    border: 1.5px solid rgba(0,0,0,0.1);
+    border-radius: 7px; font-size: 0.75rem;
+    font-family: inherit; background: white; color: #1a1a1a;
+  }
+
+  .swatch {
+    width: 14px; height: 14px; border-radius: 4px;
+    display: inline-block; vertical-align: middle;
+    margin-right: 8px; border: 1px solid rgba(0,0,0,0.08);
+  }
+</style>
+</head>
+<body>
+
+<h1>Item Card Background — Colour Options</h1>
+<p class="subtitle">Current: #F7F6F0 (cream) &middot; Three alternatives below</p>
+
+<div class="grid">
+
+  <!-- Current -->
+  <div class="option">
+    <div class="option-header">
+      <span class="option-label"><span class="swatch" style="background:#F7F6F0;"></span>Current</span>
+      <span class="option-hex">#F7F6F0</span>
+    </div>
+    <div class="option-body">
+      <div class="item-card" style="background: #F7F6F0;">
+        <p class="item-name">Single Wall — 8 oz</p>
+        <p class="item-spec">Top Dia. 80 mm &middot; 1,000 pcs/case</p>
+        <div class="item-fields">
+          <div class="field-group">
+            <label>Order Volume</label>
+            <input type="number" value="5000">
+          </div>
+          <div class="field-group">
+            <label>Coating</label>
+            <select><option>PE Coating</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option A: Soft sage mist -->
+  <div class="option">
+    <div class="option-header">
+      <span class="option-label"><span class="swatch" style="background:#F0F4F1;"></span>Option A — Sage Mist</span>
+      <span class="option-hex">#F0F4F1</span>
+    </div>
+    <div class="option-body">
+      <div class="item-card" style="background: #F0F4F1;">
+        <p class="item-name">Single Wall — 8 oz</p>
+        <p class="item-spec">Top Dia. 80 mm &middot; 1,000 pcs/case</p>
+        <div class="item-fields">
+          <div class="field-group">
+            <label>Order Volume</label>
+            <input type="number" value="5000">
+          </div>
+          <div class="field-group">
+            <label>Coating</label>
+            <select><option>PE Coating</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option B: Cool pearl -->
+  <div class="option">
+    <div class="option-header">
+      <span class="option-label"><span class="swatch" style="background:#F5F6F8;"></span>Option B — Cool Pearl</span>
+      <span class="option-hex">#F5F6F8</span>
+    </div>
+    <div class="option-body">
+      <div class="item-card" style="background: #F5F6F8;">
+        <p class="item-name">Single Wall — 8 oz</p>
+        <p class="item-spec">Top Dia. 80 mm &middot; 1,000 pcs/case</p>
+        <div class="item-fields">
+          <div class="field-group">
+            <label>Order Volume</label>
+            <input type="number" value="5000">
+          </div>
+          <div class="field-group">
+            <label>Coating</label>
+            <select><option>PE Coating</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option C: Warm linen -->
+  <div class="option">
+    <div class="option-header">
+      <span class="option-label"><span class="swatch" style="background:#F6F4EF;"></span>Option C — Warm Linen</span>
+      <span class="option-hex">#F6F4EF</span>
+    </div>
+    <div class="option-body">
+      <div class="item-card" style="background: #F6F4EF;">
+        <p class="item-name">Single Wall — 8 oz</p>
+        <p class="item-spec">Top Dia. 80 mm &middot; 1,000 pcs/case</p>
+        <div class="item-fields">
+          <div class="field-group">
+            <label>Order Volume</label>
+            <input type="number" value="5000">
+          </div>
+          <div class="field-group">
+            <label>Coating</label>
+            <select><option>PE Coating</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

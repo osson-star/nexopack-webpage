@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview — Food Container with Shape Filter</title>
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<style>
+  :root {
+    --sage-100: #abbeb2; --sage-300: #6a9d7d; --sage-500: #317a4d;
+    --sage-700: #005020; --sage-900: #003114;
+    --cream: #F7F6F0;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter var', 'Inter', sans-serif;
+    background: var(--cream); color: #1a1a1a;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .badge {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: var(--sage-700); color: var(--cream);
+    text-align: center; padding: 10px 16px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  .badge span { opacity: 0.6; font-weight: 400; }
+
+  .area { max-width: 860px; margin: 72px auto 60px; padding: 0 24px; }
+
+  /* Tab strip */
+  .tab-strip {
+    display: flex; position: relative;
+    border-bottom: 2px solid rgba(0,0,0,0.06);
+  }
+  .tab-btn {
+    padding: 14px 24px 16px; font-size: 0.9rem; font-weight: 500;
+    cursor: pointer; border: none; background: transparent;
+    color: rgba(0,0,0,0.35); transition: color 0.2s ease;
+    font-family: inherit;
+  }
+  .tab-btn.active { color: var(--sage-700); font-weight: 600; }
+  .tab-indicator {
+    position: absolute; bottom: -2px; height: 2.5px;
+    background: var(--sage-700); border-radius: 2px;
+  }
+
+  .wall-desc {
+    font-size: 0.875rem; color: rgba(0,0,0,0.5);
+    line-height: 1.6; margin: 20px 0 24px;
+  }
+
+  /* Card */
+  .card {
+    background: white; border-radius: 16px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    padding: 28px; margin-bottom: 20px;
+  }
+
+  /* Card header with label + filter buttons */
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
+  }
+  .card-label {
+    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--sage-500); margin: 0;
+  }
+
+  /* Shape filter buttons */
+  .shape-filters {
+    display: flex; gap: 6px;
+  }
+  .shape-btn {
+    padding: 6px 16px; border-radius: 999px;
+    font-size: 0.75rem; font-weight: 600;
+    cursor: pointer; border: 1.5px solid rgba(0,0,0,0.1);
+    background: transparent; color: rgba(0,0,0,0.4);
+    transition: all 0.2s ease; font-family: inherit;
+  }
+  .shape-btn:hover:not(.shape-active) {
+    border-color: rgba(0,0,0,0.2); color: rgba(0,0,0,0.6);
+  }
+  .shape-active {
+    background: var(--sage-700); color: var(--cream);
+    border-color: var(--sage-700);
+    box-shadow: 0 2px 8px rgba(0,80,32,0.2);
+  }
+
+  /* Table */
+  .spec-table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+  .spec-table th {
+    text-align: left; padding: 10px 16px; font-weight: 600;
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 0.05em; color: rgba(0,0,0,0.35);
+  }
+  .spec-table thead { border-bottom: 2px solid rgba(0,0,0,0.08); }
+  .spec-table td { padding: 12px 16px; font-size: 0.875rem; color: rgba(0,0,0,0.55); }
+  .spec-table td:first-child { font-weight: 500; color: black; white-space: nowrap; }
+  .spec-table tbody tr { border-top: 1px solid rgba(0,0,0,0.05); }
+  .spec-table tbody tr:hover { background: var(--cream); }
+  .spec-table td.dim-col { white-space: nowrap; }
+
+  /* Subcategory divider */
+  .spec-table .subcat-row td {
+    padding: 24px 16px 10px;
+    border-top: 2px solid rgba(0,0,0,0.06);
+    background: transparent;
+  }
+  .spec-table .subcat-row:hover { background: transparent; }
+  .subcat-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--sage-700);
+    background: rgba(0,80,32,0.07);
+    padding: 4px 12px; border-radius: 999px;
+  }
+
+  /* Add button */
+  .add-btn {
+    display: inline-flex; align-items: center; gap: 4px;
+    color: var(--sage-700); font-size: 0.75rem; font-weight: 600;
+    background: none; border: none; cursor: pointer;
+    font-family: inherit; transition: color 0.15s;
+  }
+  .add-btn:hover { color: var(--sage-900); }
+
+  @keyframes row-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .row-anim { opacity: 0; animation: row-in 0.3s ease-out forwards; }
+</style>
+</head>
+<body>
+<div class="badge">Preview — Food Container with Shape Filter <span>| Toggle between Rectangular and Square</span></div>
+
+<div class="area">
+  <div class="tab-strip">
+    <button class="tab-btn">Salad Bowl</button>
+    <button class="tab-btn">Soup Container</button>
+    <button class="tab-btn active">Food Container</button>
+    <button class="tab-btn">Paper Box</button>
+    <button class="tab-btn">Compartment Box</button>
+    <button class="tab-btn">Food Tray</button>
+    <div class="tab-indicator" style="left:258px; width:130px;"></div>
+  </div>
+  <p class="wall-desc">Kraft food containers for meal prep, deli, and takeaway. Available in rectangular and square shapes with PP, PET, or paper lids.</p>
+
+  <div class="card">
+    <div class="card-header">
+      <p class="card-label">Available Sizes</p>
+      <div class="shape-filters">
+        <button class="shape-btn shape-active" data-shape="rectangular">Rectangular</button>
+        <button class="shape-btn" data-shape="square">Square</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="spec-table">
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+var HEADERS = [
+  ['Size', '14%'],
+  ['L \u00d7 W \u00d7 H', '22%'],
+  ['Pcs / Case', '14%'],
+  ['Carton (L \u00d7 W \u00d7 H)', '36%'],
+  ['', '14%']
+];
+
+var RECTANGULAR = [
+  { size: '240 ml',  dim: '140 \u00d7 103 \u00d7 46 mm',  pcs: '300', carton: '440 \u00d7 210 \u00d7 430 mm' },
+  { size: '360 ml',  dim: '140 \u00d7 103 \u00d7 55 mm',  pcs: '300', carton: '440 \u00d7 210 \u00d7 430 mm' },
+  { size: '500 ml',  dim: '172 \u00d7 120 \u00d7 47 mm',  pcs: '300', carton: '500 \u00d7 250 \u00d7 485 mm' },
+  { size: '650 ml',  dim: '172 \u00d7 120 \u00d7 51 mm',  pcs: '300', carton: '500 \u00d7 250 \u00d7 485 mm' },
+  { size: '750 ml',  dim: '172 \u00d7 120 \u00d7 57 mm',  pcs: '300', carton: '500 \u00d7 250 \u00d7 495 mm' },
+  { size: '850 ml',  dim: '172 \u00d7 120 \u00d7 63 mm',  pcs: '300', carton: '500 \u00d7 250 \u00d7 495 mm' },
+  { size: '1000 ml', dim: '172 \u00d7 120 \u00d7 78 mm',  pcs: '300', carton: '500 \u00d7 250 \u00d7 515 mm' },
+  { subcat: 'Lids' },
+  { size: 'PP Lid',    dim: '140 \u00d7 103 mm', pcs: '300', carton: '440 \u00d7 260 \u00d7 225 mm' },
+  { size: 'PET Lid',   dim: '172 \u00d7 120 mm', pcs: '300', carton: '555 \u00d7 270 \u00d7 270 mm' },
+  { size: 'PP Lid',    dim: '172 \u00d7 120 mm', pcs: '300', carton: '530 \u00d7 250 \u00d7 350 mm' },
+  { size: 'Paper Lid', dim: '172 \u00d7 120 mm', pcs: '300', carton: '530 \u00d7 350 \u00d7 510 mm' },
+];
+
+var SQUARE = [
+  { size: '500 ml',  dim: '131 \u00d7 48.5 \u00d7 113 mm',   pcs: '300', carton: '410 \u00d7 280 \u00d7 410 mm' },
+  { size: '750 ml',  dim: '168 \u00d7 45 \u00d7 149 mm',     pcs: '300', carton: '530 \u00d7 350 \u00d7 420 mm' },
+  { size: '800 ml',  dim: '145.5 \u00d7 55 \u00d7 122.5 mm', pcs: '300', carton: '465 \u00d7 315 \u00d7 425 mm' },
+  { size: '1000 ml', dim: '168 \u00d7 55 \u00d7 149 mm',     pcs: '300', carton: '530 \u00d7 350 \u00d7 420 mm' },
+  { size: '1100 ml', dim: '151 \u00d7 74 \u00d7 122.5 mm',   pcs: '300', carton: '460 \u00d7 310 \u00d7 450 mm' },
+  { size: '1200 ml', dim: '168 \u00d7 66 \u00d7 146.5 mm',   pcs: '300', carton: '540 \u00d7 360 \u00d7 440 mm' },
+  { size: '1400 ml', dim: '170 \u00d7 76 \u00d7 146.5 mm',   pcs: '300', carton: '540 \u00d7 360 \u00d7 460 mm' },
+  { subcat: 'Lids' },
+  { size: 'PET Lid', dim: '131 \u00d7 131 mm', pcs: '300', carton: '480 \u00d7 135 \u00d7 270 mm' },
+  { size: 'PET Lid', dim: '168 \u00d7 168 mm', pcs: '300', carton: '480 \u00d7 175 \u00d7 350 mm' },
+  { size: 'PET Lid', dim: '170 \u00d7 170 mm', pcs: '300', carton: '390 \u00d7 390 \u00d7 200 mm' },
+];
+
+function buildTable(data) {
+  var thead = document.getElementById('thead');
+  var tbody = document.getElementById('tbody');
+  thead.textContent = '';
+  tbody.textContent = '';
+
+  var htr = document.createElement('tr');
+  HEADERS.forEach(function(h) {
+    var th = document.createElement('th');
+    th.textContent = h[0];
+    th.style.width = h[1];
+    htr.appendChild(th);
+  });
+  thead.appendChild(htr);
+
+  var delay = 0;
+  data.forEach(function(item) {
+    var tr = document.createElement('tr');
+    tr.className = 'row-anim';
+    tr.style.animationDelay = delay + 's';
+    delay += 0.03;
+
+    if (item.subcat) {
+      tr.className += ' subcat-row';
+      var td = document.createElement('td');
+      td.colSpan = 5;
+      var badge = document.createElement('span');
+      badge.className = 'subcat-badge';
+      badge.textContent = item.subcat;
+      td.appendChild(badge);
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+      return;
+    }
+
+    var tdSize = document.createElement('td');
+    tdSize.textContent = item.size;
+    var tdDim = document.createElement('td');
+    tdDim.className = 'dim-col';
+    tdDim.textContent = item.dim;
+    var tdPcs = document.createElement('td');
+    tdPcs.textContent = item.pcs;
+    var tdCarton = document.createElement('td');
+    tdCarton.className = 'dim-col';
+    tdCarton.textContent = item.carton;
+    var tdAction = document.createElement('td');
+    tdAction.style.textAlign = 'right';
+    tdAction.style.width = '70px';
+    var btn = document.createElement('button');
+    btn.className = 'add-btn';
+    btn.textContent = '+ Add';
+    tdAction.appendChild(btn);
+
+    tr.appendChild(tdSize);
+    tr.appendChild(tdDim);
+    tr.appendChild(tdPcs);
+    tr.appendChild(tdCarton);
+    tr.appendChild(tdAction);
+    tbody.appendChild(tr);
+  });
+}
+
+/* Filter button clicks */
+document.querySelectorAll('.shape-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.shape-btn').forEach(function(b) { b.classList.remove('shape-active'); });
+    btn.classList.add('shape-active');
+    buildTable(btn.dataset.shape === 'square' ? SQUARE : RECTANGULAR);
+  });
+});
+
+/* Init */
+buildTable(RECTANGULAR);
+</script>
+</body>
+</html>

@@ -4,17 +4,17 @@
   --font-sans: 'Inter var', 'Inter', sans-serif;
   --font-display: 'Inter Display var', 'Inter Display', 'Inter var', sans-serif;
 
-  --color-sage-100: #DFE8E1;
-  --color-sage-300: #98B69E;
-  --color-sage-500: #6B8F78;
-  --color-sage-700: #4A6B58;
-  --color-sage-800: #395644;
-  --color-sage-900: #243D2F;
+  --color-sage-100: #abbeb2;
+  --color-sage-300: #6a9d7d;
+  --color-sage-500: #317a4d;
+  --color-sage-700: #005020;
+  --color-sage-800: #00431b;
+  --color-sage-900: #003114;
   --color-cream: #F7F6F0;
   --color-cream-dark: #ECEAE3;
-  --color-muted: #6D7873;
-  --color-primary: #587E67;
-  --color-divider: #d4ddd5;
+  --color-muted: #435a4d;
+  --color-primary: #005020;
+  --color-divider: #9aaea1;
 
   --tracking-spaced: 0.15em;
   --tracking-widest2: 0.25em;
@@ -22,6 +22,7 @@
 
 @import "./home.css";
 @import "./styles.css";
+@import "./products.css";
 
 @keyframes spec-panel-in {
   from {

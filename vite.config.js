@@ -7,8 +7,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: 'index.html',
-        paperMaterial: 'paper-material.html',
-        pulpMaterial: 'pulp-material.html'
+        products: 'products.html'
       }
     }
   }

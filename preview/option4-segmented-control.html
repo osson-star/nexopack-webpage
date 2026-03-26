@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option 4 — Segmented Control</title>
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<style>
+  :root {
+    --sage-100: #abbeb2; --sage-300: #6a9d7d; --sage-500: #317a4d;
+    --sage-700: #005020; --sage-900: #003114;
+    --cream: #F7F6F0; --cream-dark: #ECEAE3;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter var', 'Inter', sans-serif;
+    background: white; color: #1a1a1a;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--sage-300); color: white; }
+
+  .option-badge {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: var(--sage-700); color: var(--cream);
+    text-align: center; padding: 10px 16px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  .option-badge span { opacity: 0.6; font-weight: 400; }
+
+  .product-area { max-width: 720px; margin: 80px auto 60px; padding: 0 24px; }
+  .product-title {
+    font-family: 'Inter Display var', 'Inter Display', 'Inter var', sans-serif;
+    font-size: clamp(1.875rem, 4vw, 2.25rem);
+    font-weight: 700; letter-spacing: -0.02em; color: black;
+  }
+  .product-tagline { margin-top: 12px; font-size: 1rem; color: rgba(0,0,0,0.6); line-height: 1.6; max-width: 560px; }
+  .product-desc { margin-top: 8px; font-size: 0.875rem; color: rgba(0,0,0,0.45); line-height: 1.6; max-width: 560px; }
+
+  /* ===== Segmented Control ===== */
+  .seg-outer {
+    margin-top: 32px; margin-bottom: 28px;
+  }
+  .seg-track {
+    display: inline-flex; position: relative;
+    background: var(--cream-dark); border-radius: 999px;
+    padding: 4px;
+  }
+  .seg-btn {
+    position: relative; z-index: 1;
+    padding: 10px 28px; border-radius: 999px;
+    font-size: 0.8125rem; font-weight: 600;
+    cursor: pointer; border: none; background: transparent;
+    color: rgba(0,0,0,0.4);
+    transition: color 0.3s ease;
+    font-family: inherit; white-space: nowrap;
+  }
+  .seg-btn:hover:not(.seg-active) { color: rgba(0,0,0,0.6); }
+  .seg-active { color: var(--cream); }
+  .seg-slider {
+    position: absolute; top: 4px; bottom: 4px;
+    background: var(--sage-700);
+    border-radius: 999px;
+    box-shadow: 0 2px 10px rgba(0,80,32,0.3);
+    transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .wall-desc {
+    font-size: 0.875rem; color: rgba(0,0,0,0.5);
+    line-height: 1.6; margin-bottom: 24px; min-height: 22px;
+    transition: opacity 0.2s ease;
+  }
+  .wall-desc.fading { opacity: 0; }
+
+  .spec-card {
+    background: white; border-radius: 16px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+    padding: 28px; margin-bottom: 20px;
+  }
+  .spec-card-label {
+    font-family: 'Inter Display var', 'Inter Display', 'Inter var', sans-serif;
+    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--sage-500); margin-bottom: 20px;
+  }
+
+  .spec-table { border-collapse: collapse; width: 100%; }
+  .spec-table th {
+    text-align: left; padding: 10px 16px; font-weight: 600;
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 0.05em; color: rgba(0,0,0,0.35);
+  }
+  .spec-table thead { border-bottom: 2px solid rgba(0,0,0,0.08); }
+  .spec-table td { padding: 12px 16px; font-size: 0.875rem; color: rgba(0,0,0,0.55); }
+  .spec-table td:first-child { font-weight: 500; color: black; }
+  .spec-table tbody tr { border-top: 1px solid rgba(0,0,0,0.05); }
+  .spec-table tbody tr:hover { background: var(--cream); }
+
+  @keyframes row-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .row-animate { opacity: 0; animation: row-in 0.3s ease-out forwards; }
+
+  .page-bg { background: var(--cream); min-height: 100vh; padding-bottom: 60px; }
+  .header-bg { background: white; padding-top: 56px; }
+
+  @media (max-width: 480px) {
+    .seg-btn { padding: 10px 16px; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+<div class="option-badge">Option 4 — Segmented Control <span>| iOS-style toggle with sliding sage background</span></div>
+
+<div class="header-bg">
+  <div class="product-area" style="margin-bottom:0; padding-bottom: 32px;">
+    <p style="font-size:0.75rem; font-weight:600; text-transform:uppercase; letter-spacing:0.25em; color:var(--sage-500); margin-bottom:12px;">Product Catalog</p>
+    <h1 class="product-title">Paper Cup</h1>
+    <p class="product-tagline">Premium single-use hot &amp; cold cups for cafes, restaurants, and branded chains.</p>
+    <p class="product-desc">Available in single wall, double wall, and ripple wall constructions.</p>
+  </div>
+</div>
+
+<div class="page-bg">
+  <div class="product-area" style="margin-top: 0; padding-top: 8px;">
+
+    <div class="seg-outer">
+      <div class="seg-track" id="seg-track">
+        <div class="seg-slider" id="seg-slider"></div>
+        <button class="seg-btn seg-active" data-wall="single">Single Wall</button>
+        <button class="seg-btn" data-wall="double">Double Wall</button>
+        <button class="seg-btn" data-wall="ripple">Ripple Wall</button>
+      </div>
+    </div>
+
+    <p class="wall-desc" id="wall-desc"></p>
+
+    <div class="spec-card">
+      <p class="spec-card-label">Available Sizes</p>
+      <div style="overflow-x:auto;">
+        <table class="spec-table">
+          <thead><tr><th>Size</th><th>Top Dia.</th><th>Height</th><th>Capacity</th></tr></thead>
+          <tbody id="sizes-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var DATA = {
+  single: {
+    desc: 'Standard single-layer construction. Lightweight and cost-effective. Best for cold or warm beverages, or when paired with a sleeve.',
+    sizes: [['4 oz','62 mm','65 mm','120 ml'],['8 oz','80 mm','90 mm','240 ml'],['12 oz','90 mm','108 mm','350 ml'],['16 oz','90 mm','135 mm','470 ml'],['22 oz','90 mm','155 mm','650 ml']]
+  },
+  double: {
+    desc: 'Two layers of paperboard with an insulating air gap. No sleeve needed \u2014 comfortable to hold with hot drinks.',
+    sizes: [['4 oz','62 mm','68 mm','120 ml'],['8 oz','80 mm','92 mm','240 ml'],['12 oz','90 mm','110 mm','350 ml'],['16 oz','90 mm','138 mm','470 ml']]
+  },
+  ripple: {
+    desc: 'Outer ripple layer provides superior insulation and grip. Premium look and feel, ideal for branded takeaway.',
+    sizes: [['8 oz','80 mm','95 mm','240 ml'],['12 oz','90 mm','112 mm','350 ml'],['16 oz','90 mm','140 mm','470 ml'],['22 oz','90 mm','158 mm','650 ml']]
+  }
+};
+
+function positionSlider(btn) {
+  var slider = document.getElementById('seg-slider');
+  slider.style.left = btn.offsetLeft + 'px';
+  slider.style.width = btn.offsetWidth + 'px';
+}
+
+function buildRows(sizes, tbody) {
+  tbody.textContent = '';
+  sizes.forEach(function(r, i) {
+    var tr = document.createElement('tr');
+    tr.className = 'row-animate';
+    tr.style.animationDelay = (i * 0.04) + 's';
+    r.forEach(function(val) {
+      var td = document.createElement('td');
+      td.textContent = val;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+}
+
+function switchWall(wall, btn) {
+  document.querySelectorAll('.seg-btn').forEach(function(b) { b.classList.remove('seg-active'); });
+  btn.classList.add('seg-active');
+  positionSlider(btn);
+
+  var desc = document.getElementById('wall-desc');
+  desc.classList.add('fading');
+  setTimeout(function() {
+    desc.textContent = DATA[wall].desc;
+    desc.classList.remove('fading');
+    buildRows(DATA[wall].sizes, document.getElementById('sizes-body'));
+  }, 200);
+}
+
+document.querySelectorAll('.seg-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    switchWall(btn.dataset.wall, btn);
+  });
+});
+
+var firstBtn = document.querySelector('.seg-active');
+positionSlider(firstBtn);
+switchWall('single', firstBtn);
+window.addEventListener('resize', function() {
+  var active = document.querySelector('.seg-active');
+  if (active) positionSlider(active);
+});
+</script>
+</body>
+</html>

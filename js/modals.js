@@ -126,13 +126,15 @@ function handleQuoteSubmit(e) {
   var name             = document.getElementById('q-name').value.trim();
   var company          = document.getElementById('q-company').value.trim();
   var email            = document.getElementById('q-email').value.trim();
+  var printFileInput   = document.getElementById('q-print-file');
+  var printFile        = printFileInput && printFileInput.files[0];
 
   var valid = true;
   ['q-product-category','q-material','q-quantity','q-delivery','q-custom-printing','q-name','q-company','q-email'].forEach(clearFieldError);
 
   if (!productCategory)     { showFieldError('q-product-category', 'Please select a product category.'); valid = false; }
   if (!material)            { showFieldError('q-material',         'Please select a material.');          valid = false; }
-  if (!quantity)            { showFieldError('q-quantity',         'Please select a quantity range.');     valid = false; }
+  if (!quantity)            { showFieldError('q-quantity',         'Please enter or select a quantity.'); valid = false; }
   if (!deliveryLocation)    { showFieldError('q-delivery',         'Please select a delivery location.');  valid = false; }
   if (!customPrinting)      { showFieldError('q-custom-printing',  'Please select a printing option.');    valid = false; }
   if (!name)                { showFieldError('q-name',             'Please enter your name.');             valid = false; }
@@ -144,36 +146,53 @@ function handleQuoteSubmit(e) {
   btn.disabled = true;
   btn.textContent = 'Sending\u2026';
 
-  fetch('/api/quote', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      productCategory: productCategory,
-      material: material,
-      quantity: quantity,
-      deliveryLocation: deliveryLocation,
-      customPrinting: customPrinting,
-      name: name,
-      company: company,
-      email: email
+  function doSubmit(printingFileData, printingFileName) {
+    fetch('/api/quote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        productCategory: productCategory,
+        material: material,
+        quantity: quantity,
+        deliveryLocation: deliveryLocation,
+        customPrinting: customPrinting,
+        name: name,
+        company: company,
+        email: email,
+        printingFileData: printingFileData || null,
+        printingFileName: printingFileName || null
+      })
     })
-  })
-  .then(function(res) { return res.json().then(function(data) { return { ok: res.ok, data: data }; }); })
-  .then(function(result) {
-    if (result.ok) {
-      document.getElementById('quote-form-body').classList.add('hidden');
-      document.getElementById('quote-success').classList.remove('hidden');
-    } else {
+    .then(function(res) { return res.json().then(function(data) { return { ok: res.ok, data: data }; }); })
+    .then(function(result) {
+      if (result.ok) {
+        document.getElementById('quote-form-body').classList.add('hidden');
+        document.getElementById('quote-success').classList.remove('hidden');
+      } else {
+        showQuoteError();
+        btn.disabled = false;
+        btn.textContent = 'Submit Request';
+      }
+    })
+    .catch(function() {
       showQuoteError();
       btn.disabled = false;
       btn.textContent = 'Submit Request';
-    }
-  })
-  .catch(function() {
-    showQuoteError();
-    btn.disabled = false;
-    btn.textContent = 'Submit Request';
-  });
+    });
+  }
+
+  if (printFile) {
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      doSubmit(ev.target.result, printFile.name);
+    };
+    reader.onerror = function() {
+      doSubmit(null, null);
+    };
+    reader.readAsDataURL(printFile);
+  } else {
+    doSubmit(null, null);
+  }
 }
 
 function showQuoteError() {
@@ -183,6 +202,54 @@ function showQuoteError() {
 
 document.addEventListener('DOMContentLoaded', function() {
   initPillSelectors();
+
+  // Quantity: sync custom text input ↔ pill selection
+  var quantityCustom = document.getElementById('q-quantity-custom');
+  var quantityHidden = document.getElementById('q-quantity');
+  var quantityPillGroup = document.getElementById('q-quantity-pills');
+  if (quantityCustom && quantityHidden && quantityPillGroup) {
+    quantityCustom.addEventListener('input', function() {
+      var val = quantityCustom.value.trim();
+      quantityHidden.value = val;
+      // deselect all quantity pills when typing a custom value
+      quantityPillGroup.querySelectorAll('.pill').forEach(function(p) {
+        p.classList.remove('pill-active');
+      });
+    });
+    // when a quantity pill is clicked, clear the custom input
+    quantityPillGroup.querySelectorAll('.pill').forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        quantityCustom.value = '';
+      });
+    });
+  }
+
+  // Custom Printing: show/hide upload zone when "Yes" is selected
+  var printingPillGroup = document.getElementById('q-custom-printing-pills');
+  var uploadZone = document.getElementById('q-upload-zone');
+  var uploadInput = document.getElementById('q-print-file');
+  var uploadLabelText = document.getElementById('q-upload-label-text');
+  if (printingPillGroup && uploadZone) {
+    printingPillGroup.querySelectorAll('.pill').forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        if (pill.dataset.value === 'Yes') {
+          uploadZone.classList.remove('hidden');
+        } else {
+          uploadZone.classList.add('hidden');
+          if (uploadInput) uploadInput.value = '';
+          if (uploadLabelText) uploadLabelText.textContent = 'Upload print artwork';
+        }
+      });
+    });
+  }
+
+  // Show selected filename in upload zone
+  if (uploadInput && uploadLabelText) {
+    uploadInput.addEventListener('change', function() {
+      var file = uploadInput.files[0];
+      if (file) uploadLabelText.textContent = file.name;
+    });
+  }
 
   var contactForm = document.getElementById('contact-form');
   if (contactForm) contactForm.addEventListener('submit', handleContactSubmit);
